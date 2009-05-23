@@ -1,0 +1,30 @@
+- develop main loop interface
+    - abstract main object interface
+    - abstract rendering
+    - abstract collision detection
+    - add "step" loop
+    ?
+     1. foreach active input listener, recieve events
+     2. foreach entity step
+     3. foreach collidable collide
+     4. foreach collision resolve
+     5. foreach renderable render
+- start creating castle generators
+    - develop primitive functions
+    - IRenderable interface
+- terrain collision
+    - ICollidable interface
+    - IEntity interface implementing step(time delta)
+- improve Main class
+    - name Main class and main_implementation.cpp better
+- billboards
+    - point sprite support
+    +textures
+- textured terrain
+    - multitexturing
+
+TODO FORMAT:
+    - task
+    + completed task
+    . notes
+    ? questions
