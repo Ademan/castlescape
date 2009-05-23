@@ -1,0 +1,1 @@
+g++ -I /home/dan/Projects/mungboard/cml-1_0_0/ -lGL -lSDL -lSDL_image -lGLU main.cpp -o tardboy && ./tardboy sprite.png
