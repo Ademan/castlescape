@@ -6,29 +6,17 @@
 #include <SDL/SDL_opengl.h>
 #include <GL/glu.h>
 
-#include <cml/cml.h>
-
 #define WIDTH   640
 #define HEIGHT  480
 #define MOVESPEED 25
 
+#include <cml/cml.h>
 #include "terrain.h"
+#include "math_types.h"
 
 using std::cout;
 using std::endl;
 using std::ifstream;
-
-typedef cml::vector3f       vec3;
-typedef cml::matrix33f_c    mat3;
-typedef cml::matrix33f_r    cmat3;
-
-typedef cml::vector4f       vec4;
-typedef cml::matrix44f_c    mat4;
-
-typedef cml::quaternionf_p  pquat;
-typedef cml::quaternionf_n  nquat;
-
-typedef pquat               quat;
 
 using cml::quaternion_rotate_about_local_x;
 using cml::quaternion_rotate_about_local_y;
@@ -75,15 +63,6 @@ public:
     Camera(): pos(0, 0, 0), pitch(0), yaw(0) {}
     const mat4     get_mat()
     {
-        quat    q_pitch;
-        quat    q_yaw;
-
-        /*quaternion_rotate_about_world_y(q_pitch, pitch);
-        quaternion_rotate_about_world_x(q_yaw, yaw);
-
-        mat4     rotation;
-        matrix_rotation_quaternion(rotation, q_pitch * q_yaw);*/
-
         mat4 rotation;
 
         float roll = 0;
@@ -93,8 +72,6 @@ public:
         matrix_translation(translation, -pos);
 
         return rotation * translation;
-        //return translation * rotation;
-        //return translation;
     }
     void setpos(const vec3 & v)
     {
@@ -107,22 +84,11 @@ public:
     }
     void move(const vec3 & v)
     {
-        /*quat    q_pitch;
-        quat    q_yaw;
-
-        quaternion_rotate_about_local_y(q_pitch, pitch);
-        quaternion_rotate_about_local_x(q_yaw, yaw);
-
-        mat3    rotation;
-        matrix_rotation_quaternion(rotation, q_pitch * q_yaw);*/
         cmat3    rotation;
 
         float roll = 0;
         matrix_rotation_euler(rotation, yaw, pitch, roll, cml::euler_order_yxz);
         
-        //vec3 dir = v;
-        //dir.normalize();
-
         pos -= rotation * v;
     }
     void collide()
@@ -262,12 +228,16 @@ int main(int argc, char ** argv)
                 switch (event.key.keysym.sym)
                 {
                 case SDLK_w:
+                    y -= 1;
+                    break;
                 case SDLK_s:
-                    y = 0;
+                    y += 1;
                     break;
                 case SDLK_a:
+                    x -= 1;
+                    break;
                 case SDLK_d:
-                    x = 0;
+                    x += 1;
                     break;
                 case SDLK_q:
                     return cleanup(texture, stex);

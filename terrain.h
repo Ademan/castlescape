@@ -126,7 +126,7 @@ private:
     }
     size_t strip_index_count(const size_t width, const size_t height)
     {
-        return width * 2 * (height - 1) + ((height - 2) / 2) + 2;
+        return width * 2 * (height - 1) + ((height + 1) / 2) * 3;
     }
     void strip(const size_t width, const size_t height)
     {
@@ -140,35 +140,30 @@ private:
         for (int y = 0; y < (height - 1); y++)
         {
             //forwards
-            if (y % 2 == 0)
+            if (y > 0)
             {
-                cout << "forwards" << endl;
-                if (y > 0)
-                {
-                    *i++ = in(0, y);
-                    *i++ = in(0, y + 1);
-                }
-
                 *i++ = in(0, y);
-                for (int x = 0; x < (width - 1); x++)
-                {
-                    *i++ = in(x, y + 1);
-                    *i++ = in(x + 1, y);
-                }
-                *i++ = in(width - 1, y + 1);
-            }
-            else
-            {
-                cout << "backwards" << endl;
-                *i++ = in(width - 1, y);
-                *i++ = in(width - 1, y + 1);
-                for (int x = 0; x < (width - 1); x++)
-                {
-                    *i++ = in(width - x - 1, y + 1);
-                    *i++ = in(width - x - 2, y);
-                }
                 *i++ = in(0, y + 1);
             }
+
+            *i++ = in(0, y);
+            for (int x = 0; x < (width - 1); x++)
+            {
+                *i++ = in(x, y + 1);
+                *i++ = in(x + 1, y);
+            }
+            *i++ = in(width - 1, y + 1);
+
+            y++;
+            if (y >= (height - 1)) break;
+            *i++ = in(width - 1, y);
+            *i++ = in(width - 1, y + 1);
+            for (int x = 0; x < (width - 1); x++)
+            {
+                *i++ = in(width - x - 1, y + 1);
+                *i++ = in(width - x - 2, y);
+            }
+            *i++ = in(0, y + 1);
         }
     }
 };
@@ -257,7 +252,6 @@ public:
 
         SDL_FreeSurface(image);
         indices.generate(width, height);
-        indices.print();
     }
     void render()
     {
