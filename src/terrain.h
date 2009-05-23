@@ -18,28 +18,8 @@ using std::endl;
 #include <SDL/SDL_image.h>
 
 #include "aabb.h"
-
-struct vertex_t
-{
-    float x, y, z;
-    float r, g, b;
-    //float s, t; /*texture coordinates*/
-    float nx, ny, nz; /*normal coordinates*/
-};
-
-template<>
-struct accessor_t<vertex_t>
-{
-    static float get_x(const vertex_t & v) {return v.x;}
-    static float get_y(const vertex_t & v) {return v.y;}
-    static float get_z(const vertex_t & v) {return v.z;}
-};
-
-template <typename index_t>
-struct gl_index_t
-{
-    static const unsigned int gl_type = 0xDEADBEEF;
-};
+#include "terrain_templates.h"
+#include "types.h"
 
 template <>
 struct gl_index_t <unsigned int>
@@ -176,6 +156,7 @@ private:
     }
 };
 
+template <typename vertex_t>
 class Terrain
 {
     AABB                box;
@@ -201,62 +182,19 @@ public:
 
         vertices = new vertex_t[vertex_count];
 
-        float highest = -999999.0f;
         for (int y = 0; y < image->h; y++)
             for (int x = 0; x < image->w; x++)
             {
-                vertex_t * v = vertices + in(x, y);
-
-                //v->x = x * 2 - width;
-                v->x = x * 2.0 - width;
-                int red = ((unsigned char *)image->pixels)[in(x, y) * 4];
-
-                v->y = red / 16.0;
-                if (v->y > highest) highest = v->y;
-
-                //v->z = y * 2 - height;
-                v->z = y * 2.0 - height;
-
-                v->r = v->g = v->b = red / 256.0;
-
-                if (v->r < 0.1)
-                {
-                    float orig = (v->r + 0.4) * 1.5;
-                    /*v->r = v->g = v->r /16;
-                    v->b = 0.7;*/
-
-                    v->r = 0xff / 256.0;
-                    v->g = 0x15 / 256.0;
-                    v->b = 0x00 / 256.0;
-
-                    v->r *= orig;
-                    v->b *= orig;
-                    v->g *= orig;
-                }
-                else if (v->r < 0.5)
-                {
-                    float orig = v->r * 1.5;
-                    /*v->r = v->b = v->r /16;
-                    v->g = 0.7;*/
-                    v->r = 0x77 / 256.0;
-                    v->g = 0x4C / 256.0;
-                    v->b = 0x0f / 256.0;
-
-                    v->r *= orig;
-                    v->b *= orig;
-                    v->g *= orig;
-
-                }
-                else
-                {
-                    float orig = v->r * 1.5;
-                    v->r = v->g = v->b = orig * 0.5;
-                }
-            }
-
-            for (int i = 0; i < vertex_count; i++)
-            {
-                vertices[i].y -= highest;
+                color_t color = {
+                    ((unsigned char *)image->pixels)[in(x, y) * 4],
+                    ((unsigned char *)image->pixels)[in(x, y) * 4 + 1],
+                    ((unsigned char *)image->pixels)[in(x, y) * 4 + 2]
+                                };
+                vertex_processor <vertex_t>::generate(
+                        vertices[in(x, y)],
+                        x, y,
+                        width, height,
+                        color);
             }
 
             smallest_aabb(box, vertices, vertex_count);

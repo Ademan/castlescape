@@ -8,6 +8,7 @@
 #include "mouse.h"
 #include "camera.h"
 #include "terrain.h"
+#include "terrain_vertex.h"
 
 #define SENSITIVITY 0.001
 #define WIDTH   640
@@ -42,6 +43,6 @@ private:
     void move(float x, float y);
 };
 
-extern Terrain *        terrain;
+extern Terrain<terrain_vertex_t> *        terrain;
 
 #endif /*MAIN_H*/
