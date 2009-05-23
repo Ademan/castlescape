@@ -60,8 +60,6 @@ struct indexer_t
     }
 };
 
-#define INDEX(x, y, w) ((x) + (y) * (w))
-
 template <typename index_t, unsigned int type>
 struct terrain_indices_t
 {

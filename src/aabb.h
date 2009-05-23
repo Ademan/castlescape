@@ -3,7 +3,11 @@
 #ifndef AABB_H
 #define AABB_H
 
+#include <limits>
 #include "math_types.h"
+
+using std::numeric_limits;
+typedef numeric_limits<float> float_limit;
 
 struct AABB
 {
@@ -28,6 +32,47 @@ struct AABB
     {
         min += v;
         max += v;
+    }
+};
+
+template <typename vertex_t>
+struct accessor_t
+{
+    static float get_x(const vertex_t & v);
+    static float get_y(const vertex_t & v);
+    static float get_z(const vertex_t & v);
+};
+
+template <typename vertex_t>
+void smallest_AABB(AABB & box, const vertex_t * vertices,
+                   const size_t count)
+{
+    // initialize min to highest
+    // possible float value
+    // so that any vertex at all
+    // will replace it
+    for (int i = 0; i < 3; i++)
+        box.min[i] = float_limit::max();
+
+    //initialize max to lowest
+    //possible values, same idea as above
+    for (int i = 0; i < 3; i++)
+        box.max[i] = -float_limit::max();
+
+    for (vertex_t * i = vertices; i != vertices + count; i++)
+    {
+        float x = accessor_t<vertex_t>::get_x(*i);
+        float y = accessor_t<vertex_t>::get_y(*i);
+        float z = accessor_t<vertex_t>::get_z(*i);
+
+        if (x < box.min[0]) box.min[0] = x;
+        else if (x > box.max[0]) box.max[0] = x;
+
+        if (y < box.min[1]) box.min[1] = y;
+        else if (y > box.max[1]) box.max[1] = y;
+
+        if (z < box.min[2]) box.min[2] = z;
+        else if (z > box.max[2]) box.max[2] = z;
     }
 };
 
@@ -69,14 +114,16 @@ void collide(const AABB & stationary, AABB & dynamic)
     // Y
     if (stationary.max[1] < dynamic.min[1])
         dynamic.move(
-                     vec3(stationary.max[1] - dynamic.min[1],
-                          0,0)
+                     vec3(0,
+                          stationary.max[1] - dynamic.min[1],
+                          0)
                     );
 
     if (stationary.max[1] < dynamic.min[1])
         dynamic.move(
-                     vec3(stationary.max[1] - dynamic.min[1],
-                          0,0)
+                     vec3(0,
+                          stationary.max[1] - dynamic.min[1],
+                          0)
                     );
 
     // maybe we've resolved the intersection
@@ -85,14 +132,14 @@ void collide(const AABB & stationary, AABB & dynamic)
     // Z
     if (stationary.max[2] < dynamic.min[2])
         dynamic.move(
-                     vec3(stationary.max[2] - dynamic.min[2],
-                          0,0)
+                     vec3(0, 0,
+                          stationary.max[2] - dynamic.min[2])
                     );
 
     if (stationary.max[2] < dynamic.min[2])
         dynamic.move(
-                     vec3(stationary.max[2] - dynamic.min[2],
-                          0,0)
+                     vec3(0, 0,
+                          stationary.max[2] - dynamic.min[2])
                     );
 }
 
