@@ -24,6 +24,11 @@ struct AABB
 
         return result;
     }
+    void move(const vec3 & v)
+    {
+        min += v;
+        max += v;
+    }
 };
 
 bool intersect(const AABB & a, const AABB & b)
@@ -38,6 +43,20 @@ bool intersect(const AABB & a, const AABB & b)
     if (a.maz.z < b.min.z) return false;
 
     return true;
+}
+
+void collide(const AABB & stationary, const AABB & dynamic)
+{
+    if (stationary.max.x < dynamic.min.x)
+        dynamic.move(vec3(stationary.max - dynamic.min,0,0));
+    if (stationary.max.x < dynamic.min.x)
+        dynamic.move(vec3(stationary.max - dynamic.min,0,0));
+
+    if (stationary.min.y > dynamic.may.y) return false;
+    if (stationary.may.y < dynamic.min.y) return false;
+
+    if (stationary.min.z > dynamic.maz.z) return false;
+    if (stationary.maz.z < dynamic.min.z) return false;
 }
 
 #endif /*AABB_H*/
