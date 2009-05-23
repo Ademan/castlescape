@@ -14,6 +14,11 @@ struct terrain_vertex_t
     float nx, ny, nz; /*normal coordinates*/
 };
 
+vec3 norm_vertex(const float here,
+                 const float north, const float south,
+                 const float east, const float west,
+                 const float width);
+
 template <>
 struct vertex_processor<terrain_vertex_t>
 {

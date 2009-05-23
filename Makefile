@@ -18,7 +18,8 @@ HEADERS=src/terrain.h src/terrain_templates.h \
 
 #HEADERS := find -name '*.h'
 
-SOURCES=src/main.cpp src/main_implementation.cpp src/util.cpp
+SOURCES=src/main.cpp src/main_implementation.cpp \
+		src/util.cpp src/terrain_vertex.cpp
 
 OBJECTS=bin/main_implementation.o bin/main.o bin/util.o
 
