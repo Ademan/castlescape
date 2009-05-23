@@ -61,7 +61,7 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    Terrain         terrain("height.png");
+    Terrain         terrain("media/height.png");
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);

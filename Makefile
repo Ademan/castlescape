@@ -13,15 +13,16 @@ CCFLAGS=-D_DEBUG
 HEADERS=src/terrain.h src/math_types.h src/texture.h
 SOURCES=src/main.cpp
 
-$(BIN): src/main.o
+$(BIN): bin/main.o
 	$(GPP) $(LIBS) -o $@ $<
  
-src/%.o: %.cpp $(HEADERS)
+#bin/%.o: %.cpp
+bin/main.o: src/main.cpp
 	$(GPP) $(CCFLAGS) $(INCLUDE) -c -o $@ $<
 
 clean:
 	rm $(BIN)
 
 test: $(BIN)
-	$(EXEC) sprite.png
+	$(EXEC) media/sprite.png
 
