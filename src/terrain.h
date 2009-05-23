@@ -17,12 +17,22 @@ using std::endl;
 #include <cml/cml.h>
 #include <SDL/SDL_image.h>
 
+#include "aabb.h"
+
 struct vertex_t
 {
     float x, y, z;
     float r, g, b;
     //float s, t; /*texture coordinates*/
     //float nx, ny, nz; /*normal coordinates*/
+};
+
+template<>
+struct accessor_t<vertex_t>
+{
+    static float get_x(const vertex_t & v) {return v.x;}
+    static float get_y(const vertex_t & v) {return v.y;}
+    static float get_z(const vertex_t & v) {return v.z;}
 };
 
 template <typename index_t>
@@ -101,7 +111,7 @@ private:
     }
     void triangles(const size_t width, const size_t height)
     {
-        cout << "Generating triangles!" << endl;
+        //cout << "Generating triangles!" << endl;
         count = triangle_index_count(width, height);
         indices = new index_t[count];
 

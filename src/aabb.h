@@ -35,16 +35,16 @@ struct AABB
     }
 };
 
-template <typename vertex_t>
+template <typename vertex_type>
 struct accessor_t
 {
-    static float get_x(const vertex_t & v);
-    static float get_y(const vertex_t & v);
-    static float get_z(const vertex_t & v);
+    static float get_x(const vertex_type & v);
+    static float get_y(const vertex_type & v);
+    static float get_z(const vertex_type & v);
 };
 
-template <typename vertex_t>
-void smallest_AABB(AABB & box, const vertex_t * vertices,
+template <typename vertex_type>
+void smallest_AABB(AABB & box, const vertex_type * vertices,
                    const size_t count)
 {
     // initialize min to highest
@@ -59,11 +59,11 @@ void smallest_AABB(AABB & box, const vertex_t * vertices,
     for (int i = 0; i < 3; i++)
         box.max[i] = -float_limit::max();
 
-    for (vertex_t * i = vertices; i != vertices + count; i++)
+    for (vertex_type * i = vertices; i != vertices + count; i++)
     {
-        float x = accessor_t<vertex_t>::get_x(*i);
-        float y = accessor_t<vertex_t>::get_y(*i);
-        float z = accessor_t<vertex_t>::get_z(*i);
+        float x = accessor_t<vertex_type>::get_x(*i);
+        float y = accessor_t<vertex_type>::get_y(*i);
+        float z = accessor_t<vertex_type>::get_z(*i);
 
         if (x < box.min[0]) box.min[0] = x;
         else if (x > box.max[0]) box.max[0] = x;
