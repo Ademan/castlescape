@@ -17,7 +17,7 @@ $(BIN): bin/main.o
 	$(GPP) $(LIBS) -o $@ $<
  
 #bin/%.o: %.cpp
-bin/main.o: src/main.cpp
+bin/main.o: src/main.cpp $(HEADERS)
 	$(GPP) $(CCFLAGS) $(INCLUDE) -c -o $@ $<
 
 clean:
