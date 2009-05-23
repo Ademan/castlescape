@@ -18,6 +18,7 @@
 #include "camera.h"
 #include "primitive.h"
 #include "mouse.h"
+#include "aabb.h"
 
 using std::cout;
 using std::endl;

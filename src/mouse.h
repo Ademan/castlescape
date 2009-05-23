@@ -32,14 +32,13 @@ public:
 		deltax = (midx - curx) * -1;
 		deltay = midy - cury;
 		
-		if (!(deltax == 0) && !(deltay == 0)) 
+		if (deltax || deltay) 
 			cam->rotate(deltax * sensitivity, deltay * sensitivity);
 	}
 
 	void dragcamera(Camera * cam, float relx, float rely)
 	{
 		cam->rotate(relx, rely);
-
 	}
 
 };

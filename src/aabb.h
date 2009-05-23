@@ -13,14 +13,14 @@ struct AABB
     {
         vec3 result(v);
 
-        if (v.x > max.x) v.x = max.x;
-        if (v.x < min.x) v.x = min.x;
+        if (v[0] > max[0]) result[0] = max[0];
+        if (v[0] < min[0]) result[0] = min[0];
 
-        if (v.y > may.y) v.y = may.y;
-        if (v.y < min.y) v.y = min.y;
+        if (v[1] > max[1]) result[1] = max[1];
+        if (v[1] < min[1]) result[1] = min[1];
 
-        if (v.z > maz.z) v.z = maz.z;
-        if (v.z < min.z) v.z = min.z;
+        if (v[2] > max[2]) result[2] = max[2];
+        if (v[2] < min[2]) result[2] = min[2];
 
         return result;
     }
@@ -33,34 +33,67 @@ struct AABB
 
 bool intersect(const AABB & a, const AABB & b)
 {
-    if (a.min.x > b.max.x) return false;
-    if (a.max.x < b.min.x) return false;
+    if (a.min[0] > b.max[0]) return false;
+    if (a.max[0] < b.min[0]) return false;
 
-    if (a.min.y > b.may.y) return false;
-    if (a.may.y < b.min.y) return false;
+    if (a.min[1] > b.max[1]) return false;
+    if (a.max[1] < b.min[1]) return false;
 
-    if (a.min.z > b.maz.z) return false;
-    if (a.maz.z < b.min.z) return false;
+    if (a.min[2] > b.max[2]) return false;
+    if (a.max[2] < b.min[2]) return false;
 
     return true;
 }
 
-void collide(const AABB & stationary, const AABB & dynamic)
+void collide(const AABB & stationary, AABB & dynamic)
 {
-    if (stationary.max.x < dynamic.min.x)
-        dynamic.move(vec3(stationary.max - dynamic.min,0,0));
-    if (stationary.max.x < dynamic.min.x)
-        dynamic.move(vec3(stationary.max - dynamic.min,0,0));
+    if (!intersect(stationary, dynamic)) return;
 
-    if (stationary.may.y < dynamic.min.y)
-        dynamic.move(vec3(stationary.may - dynamic.min,0,0));
-    if (stationary.may.y < dynamic.min.y)
-        dynamic.move(vec3(stationary.may - dynamic.min,0,0));
+    // X
+    if (stationary.max[0] < dynamic.min[0])
+        dynamic.move(
+                     vec3(stationary.max[0] - dynamic.min[0],
+                          0,0)
+                    );
 
-    if (stationary.may.z < dynamic.min.z)
-        dynamic.move(vec3(stationary.may - dynamic.min,0,0));
-    if (stationary.may.z < dynamic.min.z)
-        dynamic.move(vec3(stationary.may - dynamic.min,0,0));
+    if (stationary.max[0] < dynamic.min[0])
+        dynamic.move(
+                     vec3(stationary.max[0] - dynamic.min[0],
+                          0,0)
+                    );
+
+
+    // maybe we've resolved the intersection
+    if (!intersect(stationary, dynamic)) return;
+
+    // Y
+    if (stationary.max[1] < dynamic.min[1])
+        dynamic.move(
+                     vec3(stationary.max[1] - dynamic.min[1],
+                          0,0)
+                    );
+
+    if (stationary.max[1] < dynamic.min[1])
+        dynamic.move(
+                     vec3(stationary.max[1] - dynamic.min[1],
+                          0,0)
+                    );
+
+    // maybe we've resolved the intersection
+    if (!intersect(stationary, dynamic)) return;
+
+    // Z
+    if (stationary.max[2] < dynamic.min[2])
+        dynamic.move(
+                     vec3(stationary.max[2] - dynamic.min[2],
+                          0,0)
+                    );
+
+    if (stationary.max[2] < dynamic.min[2])
+        dynamic.move(
+                     vec3(stationary.max[2] - dynamic.min[2],
+                          0,0)
+                    );
 }
 
 #endif /*AABB_H*/
