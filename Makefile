@@ -10,10 +10,13 @@ EXEC=$(PWD)/$(BIN)
 
 CCFLAGS=-D_DEBUG
 
-HEADERS=src/terrain.h src/math_types.h \
+HEADERS=src/terrain.h src/terrain_templates.h \
+		src/terrain_vertex.h src/math_types.h \
 		src/texture.h src/texture_array.h \
 		src/mouse.h src/input_handlers.h \
 		src/main.h src/util.h
+
+#HEADERS := find -name '*.h'
 
 SOURCES=src/main.cpp src/main_implementation.cpp src/util.cpp
 

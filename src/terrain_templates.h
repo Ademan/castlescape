@@ -14,7 +14,11 @@ struct vertex_processor
 {
     static void generate(T & v, const int x, const int y,
                          float height);
-    static void postprocess(T * vertices, const size_t count);
+    static void postprocess(T * vertices,
+                            const size_t width, const size_t height);
+    static void prepare();
+    static void submit(T * vertices);
+    static void done();
 };
 
 #endif /*TERRAIN_TEMPLATES_H*/

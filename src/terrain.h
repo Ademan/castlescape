@@ -206,17 +206,14 @@ public:
     void render()
     {
         glColor3f(1.0, 1.0, 1.0);
-        glEnableClientState(GL_VERTEX_ARRAY);
-        glEnableClientState(GL_COLOR_ARRAY);
 
-        glVertexPointer(3, GL_FLOAT, sizeof(vertex_t), &(vertices->x));
-        glColorPointer(3, GL_FLOAT, sizeof(vertex_t), &(vertices->r));
+        vertex_processor<vertex_t>::prepare();
+        vertex_processor<vertex_t>::submit(vertices);
 
         indices.draw();
         draw_aabb(box);
 
-        glDisableClientState(GL_COLOR_ARRAY);
-        glDisableClientState(GL_VERTEX_ARRAY);
+        vertex_processor<vertex_t>::done();
     }
 };
 

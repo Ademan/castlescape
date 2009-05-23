@@ -21,22 +21,18 @@ struct vertex_processor<terrain_vertex_t>
                          const size_t width, const size_t height,
                          color_t color)
     {
-        //v.x = x * 2 - width;
         v.x = x * 2.0 - width;
-        int red = color[0]; 
+        v.z = y * 2.0 - height; // "terrain space"s y is world z
+
+        int red = color[0];
 
         v.y = red / 16.0;
-
-        //v.z = y * 2 - height;
-        v.z = y * 2.0 - height;
 
         v.r = v.g = v.b = red / 256.0;
 
         if (v.r < 0.1)
         {
             float orig = (v.r + 0.4) * 1.5;
-            /*v.r = v.g = v.r /16;
-            v.b = 0.7;*/
 
             v.r = 0xff / 256.0;
             v.g = 0x15 / 256.0;
@@ -49,8 +45,7 @@ struct vertex_processor<terrain_vertex_t>
         else if (v.r < 0.5)
         {
             float orig = v.r * 1.5;
-            /*v.r = v.b = v.r /16;
-            v.g = 0.7;*/
+
             v.r = 0x77 / 256.0;
             v.g = 0x4C / 256.0;
             v.b = 0x0f / 256.0;
@@ -66,9 +61,26 @@ struct vertex_processor<terrain_vertex_t>
             v.r = v.g = v.b = orig * 0.5;
         }
     }
-    static void postprocess(terrain_vertex_t * vertices, const size_t count)
+    static void postprocess(terrain_vertex_t * vertices,
+                            const size_t width, const size_t height)
     {
+        for (;;);
 
+    }
+    static void prepare()
+    {
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glEnableClientState(GL_COLOR_ARRAY);
+    }
+    static void submit(terrain_vertex_t * vertices)
+    {
+        glVertexPointer(3, GL_FLOAT, sizeof(terrain_vertex_t), &(vertices->x));
+        glColorPointer(3, GL_FLOAT, sizeof(terrain_vertex_t), &(vertices->r));
+    }
+    static void done()
+    {
+        glDisableClientState(GL_COLOR_ARRAY);
+        glDisableClientState(GL_VERTEX_ARRAY);
     }
 };
 
