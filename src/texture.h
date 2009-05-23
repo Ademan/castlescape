@@ -5,14 +5,13 @@
 #include <SDL/SDL_image.h>
 #include <GL/gl.h>
 
-template <GLuint min_filter, GLuint mag_filter>
 struct texture_t
 {
     GLuint        texture;
     SDL_Surface * image;
     texture_t() {}
 
-    bool open(const char * path)
+    bool open(const char * path, GLuint min_filter, GLuint mag_filter)
     {
         image = IMG_Load(path);
 
@@ -49,6 +48,12 @@ struct texture_t
             return 0;
         }
     }
+    void bind(unsigned int unit)
+    {
+        glEnable(GL_TEXTURE0 + unit);
+        glActiveTexture(GL_TEXTURE0 + unit);
+        glBindTexture(GL_TEXTURE_2D, texture);
+    }
     ~texture_t()
     {
         if (texture)
@@ -58,8 +63,5 @@ struct texture_t
             SDL_FreeSurface(image);
     }
 };
-
-//glEnable(GL_TEXTURE0) ?
-//glActiveTexture(GL_TEXTURE0)
 
 #endif /*TEXTURE_H*/
