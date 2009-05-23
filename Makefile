@@ -16,6 +16,8 @@ HEADERS=src/terrain.h src/terrain_templates.h \
 		src/mouse.h src/input_handlers.h \
 		src/main.h src/util.h
 
+#yeahhhhhhh!
+#SRCS = $(wildcard *.cpp)
 #HEADERS := find -name '*.h'
 
 SOURCES=src/main.cpp src/main_implementation.cpp \
