@@ -8,96 +8,34 @@
 
 #define WIDTH   640
 #define HEIGHT  480
+
 #define MOVESPEED 25
-#define SENSITIVITY .01
-#define MOUSE_MOVE 0
+#define SENSITIVITY 0.001
+
 #include <cml/cml.h>
 #include "terrain.h"
 #include "math_types.h"
+#include "camera.h"
+#include "primitive.h"
 #include "mouse.h"
 
 using std::cout;
 using std::endl;
 using std::ifstream;
 
-using cml::quaternion_rotate_about_local_x;
+/*using cml::quaternion_rotate_about_local_x;
 using cml::quaternion_rotate_about_local_y;
 
 using cml::quaternion_rotate_about_world_x;
-using cml::quaternion_rotate_about_world_y;
+using cml::quaternion_rotate_about_world_y;*/
 
-using cml::matrix_rotation_quaternion;
-using cml::matrix_rotation_euler;
-using cml::matrix_translation;
-
-void draw_compass()
+int cleanup()
 {
-    glBegin(GL_LINES);
-    glColor3f(1, 0, 0);
-    glVertex3f(0, 0, 0);
-    glVertex3f(1, 0, 0);
-
-    glColor3f(0, 1, 0);
-    glVertex3f(0, 0, 0);
-    glVertex3f(0, 1, 0);
-
-    glColor3f(0, 0, 1);
-    glVertex3f(0, 0, 0);
-    glVertex3f(0, 0, 1);
-    glEnd();
-}
-
-int cleanup(GLuint texture, SDL_Surface * stex)
-{
-    glDeleteTextures(1, &texture);
-    SDL_FreeSurface(stex);
     SDL_QuitSubSystem(SDL_INIT_VIDEO);
 
     return 0;
 }
 
-class Camera
-{
-    vec3     pos;
-    float    pitch;
-    float    yaw;
-public:
-    Camera(): pos(0, 0, 0), pitch(0), yaw(0) {}
-    const mat4     get_mat()
-    {
-        mat4 rotation;
-
-        float roll = 0;
-        matrix_rotation_euler(rotation, yaw, pitch, roll, cml::euler_order_yxz);
-
-        mat4     translation;
-        matrix_translation(translation, -pos);
-
-        return rotation * translation;
-    }
-    void setpos(const vec3 & v)
-    {
-        pos = v;
-    }
-    void rotate(float _yaw, float _pitch)
-    {
-        yaw += _yaw;
-        pitch += _pitch;
-    }
-    void move(const vec3 & v)
-    {
-        cmat3    rotation;
-
-        float roll = 0;
-        matrix_rotation_euler(rotation, yaw, pitch, roll, cml::euler_order_yxz);
-        
-        pos -= rotation * v;
-    }
-    void collide()
-    {
-        if (pos[1] < 0) pos[1] = 0;
-    }
-};
 
 int main(int argc, char ** argv)
 {
@@ -124,56 +62,18 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    SDL_Surface * stex = NULL;
-    stex = IMG_Load(argv[1]);
-
-    Terrain         terrain("height.png");
-
-    GLuint        texture = 0;
-    glGenTextures(1, &texture);
-
-    glBindTexture(GL_TEXTURE_2D, texture);
-
-    glTexParameteri(GL_TEXTURE_2D,
-                    GL_TEXTURE_MIN_FILTER,
-                    GL_LINEAR);
-
-    glTexParameteri(GL_TEXTURE_2D,
-                    GL_TEXTURE_MAG_FILTER,
-                    GL_LINEAR);
-
-    cout << "sending tex" << endl;
-    cout << "tex @" << stex << endl;
-    cout << " width: " << stex->w << endl;
-    cout << " height: " << stex->h << endl;
-    glTexImage2D(GL_TEXTURE_2D, 0, /*mipmap level*/
-                 GL_RGBA, /*internal format*/
-                 stex->w, stex->h,
-                 0, /*border*/
-                 GL_RGBA, /*data format*/
-                 GL_UNSIGNED_BYTE, /*component data*/
-                 stex->pixels);
-    cout << "done sending tex" << endl;
+    Terrain         terrain("media/height.png");
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    /*float lava_color[] = {0xff / 256.0,
-                          0x15 / 256.0,
-                          0x00 / 256.0,
-                          0.5};*/
-
     float lava_color[] = {0x90 / 256.0,
                           0x00 / 256.0,
                           0x00 / 256.0,
                           0.5};
 
-    /*float lava_color[] = {0,
-                          0,
-                          0,
-                          0.5};*/
     glEnable(GL_FOG);
     glFogfv(GL_FOG_COLOR, lava_color);
     glFogf(GL_FOG_START, 80);
@@ -184,9 +84,7 @@ int main(int argc, char ** argv)
     glLoadIdentity();
     gluPerspective(45.0, ((float)WIDTH)/HEIGHT, 1.0, 1000.0);
 
-    cout << "now" << endl;
     glClearColor(lava_color[0], lava_color[1], lava_color[2], 1);
-    cout << "and again" << endl;
     glClearDepth(1.0);
 
     SDL_Event   event;
@@ -196,18 +94,16 @@ int main(int argc, char ** argv)
     unsigned int last = SDL_GetTicks();
     float x = 0;
     float y = 0;
+
 	Mouse mouse(WIDTH, HEIGHT, SENSITIVITY);
-    cout << "entering main loop" << endl;
+	SDL_ShowCursor(SDL_DISABLE);
 
     while (true)
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         unsigned int now = SDL_GetTicks();
-#ifdef MOUSE_LOOK
-		mouse.update();
-		mouse.movecamera(camera);
-#endif
+
         float elapsed = (now - last) / 1000.0f;
         last = now;
         while (SDL_PollEvent(&event))
@@ -247,7 +143,7 @@ int main(int argc, char ** argv)
                     x += 1;
                     break;
                 case SDLK_q:
-                    return cleanup(texture, stex);
+                    return cleanup();
                 default: break;
                 }
                 break;
@@ -255,33 +151,26 @@ int main(int argc, char ** argv)
                 if (event.motion.state & SDL_BUTTON(1))
                 {
                     camera.rotate(event.motion.xrel / 200.0,
-                                  event.motion.yrel / -200.0);
+                                  event.motion.yrel / 200.0);
                 }
                 break;
             case SDL_QUIT:
                 //cleanup
-                return cleanup(texture, stex);
+                return cleanup();
 
             default: break;
             }
+
+		mouse.update(&camera);
 
         camera.move(vec3(x *  elapsed * MOVESPEED, 0, y * elapsed * MOVESPEED));
         camera.collide();
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         glLoadMatrixf(camera.get_mat().data());
-        //glTranslatef(0, 0, -10);
 
-#ifndef TERRAIN_H
-        glBegin(GL_QUADS);
-            glColor3f(0, 0, 1);
-            glVertex3f(-9001, -1, -9001);
-            glVertex3f(-9001, -1, 9001);
-            glVertex3f(9001, -1, 9001);
-            glVertex3f(9001, -1, -9001);
-        glEnd();
-#else
         terrain.render();
+#ifdef _DEBUG
         draw_compass();
 #endif
 
