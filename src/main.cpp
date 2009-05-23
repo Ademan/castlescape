@@ -1,7 +1,6 @@
 #include <cmath>
 #include <iostream>
-#include <fstream>
-#include <SDL/SDL.h>
+#include <fstream> #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_opengl.h>
 #include <GL/glu.h>
@@ -95,12 +94,9 @@ int main(int argc, char ** argv)
     float x = 0;
     float y = 0;
 
-<<<<<<< HEAD:src/main.cpp
-=======
 	Mouse mouse(WIDTH, HEIGHT, SENSITIVITY);
 	SDL_ShowCursor(SDL_DISABLE);
 
->>>>>>> f6ef26de4f8f51e48f2b265cb19fcd41f9271ac8:src/main.cpp
     while (true)
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -164,11 +160,8 @@ int main(int argc, char ** argv)
             default: break;
             }
 
-<<<<<<< HEAD:src/main.cpp
-=======
 		mouse.update(&camera);
 
->>>>>>> f6ef26de4f8f51e48f2b265cb19fcd41f9271ac8:src/main.cpp
         camera.move(vec3(x *  elapsed * MOVESPEED, 0, y * elapsed * MOVESPEED));
         camera.collide();
         glMatrixMode(GL_MODELVIEW);
