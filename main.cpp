@@ -27,10 +27,8 @@ using cml::quaternion_rotate_about_local_y;
 using cml::quaternion_rotate_about_world_x;
 using cml::quaternion_rotate_about_world_y;*/
 
-int cleanup(GLuint texture, SDL_Surface * stex)
+int cleanup()
 {
-    glDeleteTextures(1, &texture);
-    SDL_FreeSurface(stex);
     SDL_QuitSubSystem(SDL_INIT_VIDEO);
 
     return 0;
@@ -62,31 +60,7 @@ int main(int argc, char ** argv)
         return 1;
     }
 
-    SDL_Surface * stex = NULL;
-    stex = IMG_Load(argv[1]);
-
     Terrain         terrain("height.png");
-
-    GLuint        texture = 0;
-    glGenTextures(1, &texture);
-
-    glBindTexture(GL_TEXTURE_2D, texture);
-
-    glTexParameteri(GL_TEXTURE_2D,
-                    GL_TEXTURE_MIN_FILTER,
-                    GL_LINEAR);
-
-    glTexParameteri(GL_TEXTURE_2D,
-                    GL_TEXTURE_MAG_FILTER,
-                    GL_LINEAR);
-
-    glTexImage2D(GL_TEXTURE_2D, 0, /*mipmap level*/
-                 GL_RGBA, /*internal format*/
-                 stex->w, stex->h,
-                 0, /*border*/
-                 GL_RGBA, /*data format*/
-                 GL_UNSIGNED_BYTE, /*component data*/
-                 stex->pixels);
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
@@ -164,7 +138,7 @@ int main(int argc, char ** argv)
                     x += 1;
                     break;
                 case SDLK_q:
-                    return cleanup(texture, stex);
+                    return cleanup();
                 default: break;
                 }
                 break;
@@ -177,7 +151,7 @@ int main(int argc, char ** argv)
                 break;
             case SDL_QUIT:
                 //cleanup
-                return cleanup(texture, stex);
+                return cleanup();
 
             default: break;
             }
