@@ -19,9 +19,10 @@ public:
 
 		midx = width / 2;
 		midy = height / 2;
+		
+		SDL_WarpMouse(midx, midy);
 
 		deltax = deltay = 0;
-		SDL_ShowCursor(SDL_DISABLE);
 	}
 
 	void update(Camera * cam)
