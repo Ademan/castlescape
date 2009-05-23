@@ -1,6 +1,7 @@
 #include <cmath>
 #include <iostream>
-#include <fstream> #include <SDL/SDL.h>
+#include <fstream>
+#include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <SDL/SDL_opengl.h>
 #include <GL/glu.h>
@@ -96,7 +97,6 @@ int main(int argc, char ** argv)
 
 	Mouse mouse(WIDTH, HEIGHT, SENSITIVITY);
 	SDL_ShowCursor(SDL_DISABLE);
-	bool mlook = true;
 
     while (true)
     {
@@ -144,22 +144,15 @@ int main(int argc, char ** argv)
                     break;
                 case SDLK_q:
                     return cleanup();
-				case SDLK_l:
-					mlook = !mlook;
-					if (!mlook)
-						SDL_ShowCursor(SDL_ENABLE);
-					else
-						SDL_ShowCursor(SDL_DISABLE);
                 default: break;
                 }
                 break;
             case SDL_MOUSEMOTION:
-				if (!mlook)
-					if (event.motion.state & SDL_BUTTON(1))
-					{
-						mouse.dragcamera(&camera, event.motion.xrel / 200.0,
-									  event.motion.yrel / 200.0);
-					}
+                if (event.motion.state & SDL_BUTTON(1))
+                {
+                    camera.rotate(event.motion.xrel / 200.0,
+                                  event.motion.yrel / 200.0);
+                }
                 break;
             case SDL_QUIT:
                 //cleanup
@@ -168,8 +161,7 @@ int main(int argc, char ** argv)
             default: break;
             }
 
-		if (mlook)
-			mouse.update(&camera);
+		mouse.update(&camera);
 
         camera.move(vec3(x *  elapsed * MOVESPEED, 0, y * elapsed * MOVESPEED));
         camera.collide();
