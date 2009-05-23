@@ -29,10 +29,12 @@ public:
 
         return rotation * translation;
     }
-    void setpos(const vec3 & v)
+    void set_pos(const vec3 & v)
     {
         pos = v;
     }
+    const vec3 & get_pos() const
+    {return pos;}
     void rotate(float _yaw, float _pitch)
     {
         yaw += _yaw;

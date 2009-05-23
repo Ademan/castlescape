@@ -264,6 +264,7 @@ public:
         SDL_FreeSurface(image);
         indices.generate(width, height);
     }
+    const AABB & get_aabb() const {return box;}
     void render()
     {
         glColor3f(1.0, 1.0, 1.0);

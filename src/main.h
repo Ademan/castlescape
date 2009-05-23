@@ -7,6 +7,7 @@
 #include "input_handlers.h"
 #include "mouse.h"
 #include "camera.h"
+#include "terrain.h"
 
 #define SENSITIVITY 0.001
 #define WIDTH   640
@@ -40,5 +41,7 @@ public:
 private:
     void move(float x, float y);
 };
+
+extern Terrain *        terrain;
 
 #endif /*MAIN_H*/

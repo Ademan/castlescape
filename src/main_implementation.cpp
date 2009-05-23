@@ -32,6 +32,7 @@ Main::Main(unsigned int width, unsigned int height):
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(45.0, ((float)width)/height, 1.0, 1000.0);
+    terrain = new Terrain("media/height.png");
 }
 
 void Main::mouse_down(SDL_MouseButtonEvent & event)
@@ -127,5 +128,9 @@ void Main::step()
 void Main::move(float x, float y)
 {
         camera.move(vec3(x * elapsed * MOVESPEED, 0, y * elapsed * MOVESPEED));
-        camera.collide();
+        //camera.collide();
+        vec3 newpos = terrain->get_aabb().clamp(camera.get_pos());
+        camera.set_pos(newpos);
 }
+
+Terrain * terrain;

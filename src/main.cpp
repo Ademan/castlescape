@@ -30,8 +30,6 @@ int main(int argc, char ** argv)
     key_handler =   &main_object;
     mouse_handler = &main_object;
 
-    Terrain         terrain("media/height.png");
-
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
     glMatrixMode(GL_MODELVIEW);
@@ -87,7 +85,7 @@ int main(int argc, char ** argv)
             }
 
         main_object.set_view();
-        terrain.render();
+        terrain->render();
 #ifdef _DEBUG
         draw_compass();
 #endif

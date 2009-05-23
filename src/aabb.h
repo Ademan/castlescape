@@ -14,7 +14,7 @@ struct AABB
     vec3 min, max;
     AABB() {}
     AABB(const vec3 & _min, const vec3 & _max): min(_min), max(_max) {}
-    const vec3 clamp(const vec3 & v)
+    const vec3 clamp(const vec3 & v) const
     {
         vec3 result(v);
 
@@ -77,7 +77,7 @@ void smallest_aabb(AABB & box, const vertex_type * vertices,
     }
 };
 
-bool intersect(const AABB & a, const AABB & b)
+inline bool intersect(const AABB & a, const AABB & b)
 {
     if (a.min[0] > b.max[0]) return false;
     if (a.max[0] < b.min[0]) return false;
@@ -103,12 +103,12 @@ bool intersect(const AABB & a, const AABB & b)
  *
  */
 
-void vec3_vertex(const vec3 & v)
+inline void vec3_vertex(const vec3 & v)
 {
     glVertex3fv(reinterpret_cast <const float *> (&v));
 }
 
-void draw_aabb(const AABB & box)
+inline void draw_aabb(const AABB & box)
 {
     vec3    lower[3];
     vec3    upper[3];
@@ -149,7 +149,7 @@ void draw_aabb(const AABB & box)
     glEnd();
 }
 
-void collide(const AABB & stationary, AABB & dynamic)
+inline void collide(const AABB & stationary, AABB & dynamic)
 {
     if (!intersect(stationary, dynamic)) return;
 
