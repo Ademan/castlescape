@@ -13,15 +13,15 @@ CCFLAGS=-D_DEBUG
 HEADERS=src/terrain.h src/math_types.h \
 		src/texture.h src/texture_array.h \
 		src/mouse.h src/input_handlers.h \
-		src/main.h
+		src/main.h src/util.h
 
-SOURCES=src/main.cpp src/main_implementation.cpp
+SOURCES=src/main.cpp src/main_implementation.cpp src/util.cpp
 
-OBJECTS=bin/main_implementation.o bin/main.o
+OBJECTS=bin/main_implementation.o bin/main.o bin/util.o
 
 #/$(BIN): bin/%.o
 # why can't I use a wildcard?
-$(BIN): bin/main_implementation.o bin/main.o
+$(BIN): $(OBJECTS)
 	$(GPP) $(LIBS) -o $@ $(OBJECTS)
  
 bin/%.o: src/%.cpp $(HEADERS)

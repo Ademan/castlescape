@@ -2,14 +2,13 @@
 #include <GL/glu.h>
 
 #include "main.h"
+#include "util.h"
 
 using std::cout;
 using std::cerr;
 using std::endl;
 
 #define MOVESPEED 25
-
-static SDL_Event quit_event = {SDL_QUIT};
 
 Main::Main(unsigned int width, unsigned int height):
      mouse(&camera, width, height, SENSITIVITY),
@@ -93,7 +92,8 @@ void Main::key_up(SDL_KeyboardEvent & event)
         x += 1;
         break;
     case SDLK_q:
-        SDL_PushEvent(&quit_event);
+        send_quit(0);
+        break;
     case SDLK_l:
         mlook = !mlook;
         if (!mlook)
