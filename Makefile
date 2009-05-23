@@ -26,3 +26,7 @@ clean:
 test: $(BIN)
 	$(EXEC) media/sprite.png
 
+
+test: $(BIN)
+	$(EXEC) media/sprite.png
+

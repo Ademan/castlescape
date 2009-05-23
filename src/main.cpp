@@ -10,13 +10,14 @@
 #define HEIGHT  480
 
 #define MOVESPEED 25
-#define SENSITIVITY 0.01
+#define SENSITIVITY 0.001
 
 #include <cml/cml.h>
 #include "terrain.h"
 #include "math_types.h"
 #include "camera.h"
 #include "primitive.h"
+#include "mouse.h"
 
 using std::cout;
 using std::endl;
@@ -94,6 +95,12 @@ int main(int argc, char ** argv)
     float x = 0;
     float y = 0;
 
+<<<<<<< HEAD:src/main.cpp
+=======
+	Mouse mouse(WIDTH, HEIGHT, SENSITIVITY);
+	SDL_ShowCursor(SDL_DISABLE);
+
+>>>>>>> f6ef26de4f8f51e48f2b265cb19fcd41f9271ac8:src/main.cpp
     while (true)
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -157,6 +164,11 @@ int main(int argc, char ** argv)
             default: break;
             }
 
+<<<<<<< HEAD:src/main.cpp
+=======
+		mouse.update(&camera);
+
+>>>>>>> f6ef26de4f8f51e48f2b265cb19fcd41f9271ac8:src/main.cpp
         camera.move(vec3(x *  elapsed * MOVESPEED, 0, y * elapsed * MOVESPEED));
         camera.collide();
         glMatrixMode(GL_MODELVIEW);
