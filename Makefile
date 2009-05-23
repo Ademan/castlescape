@@ -10,14 +10,16 @@ EXEC=$(PWD)/$(BIN)
 
 CCFLAGS=-D_DEBUG
 
-HEADERS=src/terrain.h src/math_types.h src/texture.h
+HEADERS=src/terrain.h src/math_types.h \
+		src/texture.h src/texture_array.h \
+		src/mouse.h
+
 SOURCES=src/main.cpp
 
 $(BIN): bin/main.o
 	$(GPP) $(LIBS) -o $@ $<
  
-#bin/%.o: %.cpp
-bin/main.o: src/main.cpp $(HEADERS)
+bin/%.o: src/%.cpp $(HEADERS)
 	$(GPP) $(CCFLAGS) $(INCLUDE) -c -o $@ $<
 
 clean:
@@ -25,8 +27,3 @@ clean:
 
 test: $(BIN)
 	$(EXEC) media/sprite.png
-
-
-test: $(BIN)
-	$(EXEC) media/sprite.png
-

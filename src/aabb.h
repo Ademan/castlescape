@@ -52,11 +52,15 @@ void collide(const AABB & stationary, const AABB & dynamic)
     if (stationary.max.x < dynamic.min.x)
         dynamic.move(vec3(stationary.max - dynamic.min,0,0));
 
-    if (stationary.min.y > dynamic.may.y) return false;
-    if (stationary.may.y < dynamic.min.y) return false;
+    if (stationary.may.y < dynamic.min.y)
+        dynamic.move(vec3(stationary.may - dynamic.min,0,0));
+    if (stationary.may.y < dynamic.min.y)
+        dynamic.move(vec3(stationary.may - dynamic.min,0,0));
 
-    if (stationary.min.z > dynamic.maz.z) return false;
-    if (stationary.maz.z < dynamic.min.z) return false;
+    if (stationary.may.z < dynamic.min.z)
+        dynamic.move(vec3(stationary.may - dynamic.min,0,0));
+    if (stationary.may.z < dynamic.min.z)
+        dynamic.move(vec3(stationary.may - dynamic.min,0,0));
 }
 
 #endif /*AABB_H*/
