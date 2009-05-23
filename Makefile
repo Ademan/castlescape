@@ -8,14 +8,17 @@ INCLUDE=$(CML)
 BIN=tview
 EXEC=$(PWD)/$(BIN)
 
+CCFLAGS=-D_DEBUG
+
 $(BIN): main.o
 	$(GPP) $(LIBS) -o $@ $<
  
 main.o: main.cpp terrain.h math_types.h
-	$(GPP) $(INCLUDE) -c -o $@ $<
+	$(GPP) $(CCFLAGS) $(INCLUDE) -c -o $@ $<
 
 clean:
 	rm $(BIN)
 
 test: tview
 	$(EXEC) sprite.png
+

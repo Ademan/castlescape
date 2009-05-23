@@ -21,11 +21,11 @@ using std::cout;
 using std::endl;
 using std::ifstream;
 
-using cml::quaternion_rotate_about_local_x;
+/*using cml::quaternion_rotate_about_local_x;
 using cml::quaternion_rotate_about_local_y;
 
 using cml::quaternion_rotate_about_world_x;
-using cml::quaternion_rotate_about_world_y;
+using cml::quaternion_rotate_about_world_y;*/
 
 int cleanup(GLuint texture, SDL_Surface * stex)
 {
@@ -80,10 +80,6 @@ int main(int argc, char ** argv)
                     GL_TEXTURE_MAG_FILTER,
                     GL_LINEAR);
 
-    cout << "sending tex" << endl;
-    cout << "tex @" << stex << endl;
-    cout << " width: " << stex->w << endl;
-    cout << " height: " << stex->h << endl;
     glTexImage2D(GL_TEXTURE_2D, 0, /*mipmap level*/
                  GL_RGBA, /*internal format*/
                  stex->w, stex->h,
@@ -91,27 +87,17 @@ int main(int argc, char ** argv)
                  GL_RGBA, /*data format*/
                  GL_UNSIGNED_BYTE, /*component data*/
                  stex->pixels);
-    cout << "done sending tex" << endl;
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    /*float lava_color[] = {0xff / 256.0,
-                          0x15 / 256.0,
-                          0x00 / 256.0,
-                          0.5};*/
-
     float lava_color[] = {0x90 / 256.0,
                           0x00 / 256.0,
                           0x00 / 256.0,
                           0.5};
 
-    /*float lava_color[] = {0,
-                          0,
-                          0,
-                          0.5};*/
     glEnable(GL_FOG);
     glFogfv(GL_FOG_COLOR, lava_color);
     glFogf(GL_FOG_START, 80);
@@ -122,9 +108,7 @@ int main(int argc, char ** argv)
     glLoadIdentity();
     gluPerspective(45.0, ((float)WIDTH)/HEIGHT, 1.0, 1000.0);
 
-    cout << "now" << endl;
     glClearColor(lava_color[0], lava_color[1], lava_color[2], 1);
-    cout << "and again" << endl;
     glClearDepth(1.0);
 
     SDL_Event   event;
@@ -134,7 +118,7 @@ int main(int argc, char ** argv)
     unsigned int last = SDL_GetTicks();
     float x = 0;
     float y = 0;
-    cout << "entering main loop" << endl;
+
     while (true)
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -203,18 +187,9 @@ int main(int argc, char ** argv)
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         glLoadMatrixf(camera.get_mat().data());
-        //glTranslatef(0, 0, -10);
 
-#ifndef TERRAIN_H
-        glBegin(GL_QUADS);
-            glColor3f(0, 0, 1);
-            glVertex3f(-9001, -1, -9001);
-            glVertex3f(-9001, -1, 9001);
-            glVertex3f(9001, -1, 9001);
-            glVertex3f(9001, -1, -9001);
-        glEnd();
-#else
         terrain.render();
+#ifdef _DEBUG
         draw_compass();
 #endif
 
