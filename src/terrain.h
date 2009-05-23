@@ -24,7 +24,7 @@ struct vertex_t
     float x, y, z;
     float r, g, b;
     //float s, t; /*texture coordinates*/
-    //float nx, ny, nz; /*normal coordinates*/
+    float nx, ny, nz; /*normal coordinates*/
 };
 
 template<>
@@ -178,6 +178,7 @@ private:
 
 class Terrain
 {
+    AABB                box;
     size_t              width;
     size_t              height;
 
@@ -258,6 +259,8 @@ public:
                 vertices[i].y -= highest;
             }
 
+            smallest_aabb(box, vertices, vertex_count);
+
         SDL_FreeSurface(image);
         indices.generate(width, height);
     }
@@ -271,6 +274,7 @@ public:
         glColorPointer(3, GL_FLOAT, sizeof(vertex_t), &(vertices->r));
 
         indices.draw();
+        draw_aabb(box);
 
         glDisableClientState(GL_COLOR_ARRAY);
         glDisableClientState(GL_VERTEX_ARRAY);

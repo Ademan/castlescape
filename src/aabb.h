@@ -12,6 +12,7 @@ typedef numeric_limits<float> float_limit;
 struct AABB
 {
     vec3 min, max;
+    AABB() {}
     AABB(const vec3 & _min, const vec3 & _max): min(_min), max(_max) {}
     const vec3 clamp(const vec3 & v)
     {
@@ -44,7 +45,7 @@ struct accessor_t
 };
 
 template <typename vertex_type>
-void smallest_AABB(AABB & box, const vertex_type * vertices,
+void smallest_aabb(AABB & box, const vertex_type * vertices,
                    const size_t count)
 {
     // initialize min to highest
@@ -59,7 +60,7 @@ void smallest_AABB(AABB & box, const vertex_type * vertices,
     for (int i = 0; i < 3; i++)
         box.max[i] = -float_limit::max();
 
-    for (vertex_type * i = vertices; i != vertices + count; i++)
+    for (const vertex_type * i = vertices; i != vertices + count; i++)
     {
         float x = accessor_t<vertex_type>::get_x(*i);
         float y = accessor_t<vertex_type>::get_y(*i);
@@ -88,6 +89,64 @@ bool intersect(const AABB & a, const AABB & b)
     if (a.max[2] < b.min[2]) return false;
 
     return true;
+}
+/*      u0_______max
+ *     /|        /
+ *    / |       /|
+ *   /  |      / |
+ *  u1__|_____u2 |
+ *  |  l2_____|__l1
+ *  |  /      |  /
+ *  | /       | /
+ *  |/________|/
+ *  min      l0
+ *
+ */
+
+void vec3_vertex(const vec3 & v)
+{
+    glVertex3fv(reinterpret_cast <const float *> (&v));
+}
+
+void draw_aabb(const AABB & box)
+{
+    vec3    lower[3];
+    vec3    upper[3];
+
+    lower[0] = vec3(box.max[0], box.min[1], box.min[2]);
+    lower[1] = vec3(box.max[0], box.min[1], box.max[2]);
+    lower[2] = vec3(box.min[0], box.min[1], box.max[2]);
+    
+    upper[0] = vec3(box.min[0], box.max[1], box.max[2]);
+    upper[1] = vec3(box.min[0], box.max[1], box.min[2]);
+    upper[2] = vec3(box.max[0], box.max[1], box.min[2]);
+
+    glBegin(GL_LINE_LOOP);
+    vec3_vertex(box.max);
+    for (int i = 0; i < 3; i++)
+        vec3_vertex(upper[i]);
+    glEnd();
+
+    glBegin(GL_LINE_LOOP);
+    vec3_vertex(box.min);
+    for (int i = 0; i < 3; i++)
+        vec3_vertex(lower[i]);
+    glEnd();
+
+    glBegin(GL_LINES);
+    vec3_vertex(box.min);
+    vec3_vertex(upper[1]);
+
+    vec3_vertex(lower[0]);
+    vec3_vertex(upper[2]);
+
+    vec3_vertex(lower[1]);
+    vec3_vertex(box.max);
+
+    vec3_vertex(lower[2]);
+    vec3_vertex(upper[0]);
+
+    glEnd();
 }
 
 void collide(const AABB & stationary, AABB & dynamic)

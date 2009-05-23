@@ -53,7 +53,7 @@ int main(int argc, char ** argv)
 
     SDL_Event   event;
 
-    unsigned int last = SDL_GetTicks();
+    //unsigned int last = SDL_GetTicks();
 
 	SDL_ShowCursor(SDL_DISABLE);
 

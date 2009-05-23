@@ -12,7 +12,7 @@ using std::endl;
 
 Main::Main(unsigned int width, unsigned int height):
      mouse(&camera, width, height, SENSITIVITY),
-     mlook(true)
+     mlook(true), x(0), y(0)
 {
     SDL_InitSubSystem(SDL_INIT_VIDEO);
 
