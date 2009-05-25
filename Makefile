@@ -16,14 +16,11 @@ HEADERS=src/terrain.h src/terrain_templates.h \
 		src/mouse.h src/input_handlers.h \
 		src/main.h src/util.h
 
-#yeahhhhhhh!
-#SRCS = $(wildcard *.cpp)
-#HEADERS := find -name '*.h'
-
-SOURCES=src/main.cpp src/main_implementation.cpp \
-		src/util.cpp src/terrain_vertex.cpp
+SOURCES = $(wildcard src/*.cpp)
+HEADERS = $(wildcard src/*.h)
 
 OBJECTS=bin/main_implementation.o bin/main.o bin/util.o
+#OBJECTS=$(wildcard bin/*.o)
 
 #/$(BIN): bin/%.o
 # why can't I use a wildcard?
@@ -34,6 +31,7 @@ bin/%.o: src/%.cpp $(HEADERS)
 	$(GPP) $(CCFLAGS) $(INCLUDE) -c -o $@ $<
 
 clean:
+	rm $(OBJECTS)
 	rm $(BIN)
 
 test: $(BIN)
