@@ -24,7 +24,7 @@ class Main: public IMouseHandler, public IKeyboardHandler
     float           elapsed;
     float           x, y;
 public:
-    Main(unsigned int width, unsigned int height);
+    Main(unsigned int width, unsigned int height, int argc, char ** argv);
 
     virtual void mouse_down(SDL_MouseButtonEvent & event);
     virtual void mouse_up(SDL_MouseButtonEvent & event);

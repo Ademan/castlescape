@@ -26,7 +26,7 @@ int main(int argc, char ** argv)
     IMouseHandler * mouse_handler;
     IKeyboardHandler * key_handler;
 
-    Main            main_object(640, 480);
+    Main            main_object(640, 480, argc, argv);
     key_handler =   &main_object;
     mouse_handler = &main_object;
 

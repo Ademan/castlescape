@@ -1,3 +1,5 @@
+#include <cstdlib>
+
 #include <iostream>
 #include <GL/glu.h>
 
@@ -10,7 +12,8 @@ using std::endl;
 
 #define MOVESPEED 25
 
-Main::Main(unsigned int width, unsigned int height):
+Main::Main(unsigned int width, unsigned int height,
+           int argc, char ** argv):
      mouse(&camera, width, height, SENSITIVITY),
      mlook(true), x(0), y(0)
 {
@@ -32,7 +35,15 @@ Main::Main(unsigned int width, unsigned int height):
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     gluPerspective(45.0, ((float)width)/height, 1.0, 1000.0);
-    terrain = new Terrain <terrain_vertex_t>("media/height.png");
+
+    if (argc != 2)
+    {
+        cout << "Need an image file!" << endl;
+        exit(1);
+    }
+    else
+        terrain = new Terrain <terrain_vertex_t>(argv[1]);
+
 }
 
 void Main::mouse_down(SDL_MouseButtonEvent & event)
