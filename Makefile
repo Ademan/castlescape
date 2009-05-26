@@ -35,4 +35,4 @@ clean:
 	rm $(BIN)
 
 test: $(BIN)
-	$(EXEC) media/sprite.png
+	$(EXEC) media/height.png
