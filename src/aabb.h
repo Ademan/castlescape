@@ -4,7 +4,8 @@
 #define AABB_H
 
 #include <limits>
-#include "math_types.h"
+#include "types.h"
+#include "vertex.h"
 
 using std::numeric_limits;
 typedef numeric_limits<float> float_limit;
@@ -36,13 +37,6 @@ struct AABB
     }
 };
 
-template <typename vertex_type>
-struct accessor_t
-{
-    static float get_x(const vertex_type & v);
-    static float get_y(const vertex_type & v);
-    static float get_z(const vertex_type & v);
-};
 
 template <typename vertex_type>
 void smallest_aabb(AABB & box, const vertex_type * vertices,
