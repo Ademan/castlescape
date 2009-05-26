@@ -8,12 +8,13 @@ INCLUDE=$(CML)
 BIN=tview
 EXEC=$(PWD)/$(BIN)
 
-#CCFLAGS=-D_DEBUG
+DEBUG=-D_DEBUG
+CCFLAGS=-std=c++0x $(DEBUG)
 
 SOURCES = $(wildcard src/*.cpp)
 HEADERS = $(wildcard src/*.h)
 
-OBJECTS=bin/main_implementation.o bin/main.o bin/util.o bin/terrain_vertex.o bin/engine.o bin/view.o bin/light.o bin/window.o bin/args.o
+OBJECTS=bin/main_implementation.o bin/main.o bin/util.o bin/terrain_vertex.o bin/engine.o bin/view.o bin/light.o bin/window.o bin/args.o bin/terrain.o
 #OBJECTS=$(wildcard bin/*.o)
 
 #/$(BIN): bin/%.o
@@ -29,4 +30,4 @@ clean:
 	rm $(BIN)
 
 test: $(BIN)
-	$(EXEC) media/height.png < media/lights
+	$(EXEC) media/height.png < media/scene

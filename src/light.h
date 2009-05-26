@@ -4,12 +4,16 @@
 #define LIGHT_H
 
 #include <iostream>
+#include <string>
 
 #include <GL/gl.h>
 
 #include "types.h"
 #include "renderable.h"
 #include "entity.h"
+
+#include "args.h"
+
 using std::cout; using std::endl;
 
 inline void enable_lighting()

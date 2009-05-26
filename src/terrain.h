@@ -11,6 +11,8 @@
 
 #include <cassert>
 #include <iostream>
+#include <boost/algorithm/string.hpp>
+
 using std::cout;
 using std::endl; 
 #include <cml/cml.h>
@@ -21,6 +23,9 @@ using std::endl;
 #include "types.h"
 
 #include "terrain_vertex.h"
+#include "args.h"
+
+#include "util.h"
 
 template <>
 struct gl_index_t <unsigned int>
@@ -158,7 +163,7 @@ private:
 };
 
 template <typename vertex_t>
-class Terrain
+class terrain_t
 {
     AABB                box;
     size_t              width;
@@ -170,11 +175,15 @@ class Terrain
     terrain_indices_t <unsigned int, TERRAIN_TYPE>   indices;
 
 public:
-    Terrain(const char * path)
+    terrain_t(const char * path)
     {
         SDL_Surface * image = IMG_Load(path);
 
+#ifdef _DEBUG
+        if (! image)
+            cout << "Failed loading: " << path << endl;
         assert(image != NULL);
+#endif
         indexer_t<unsigned int> in(image->w);
 
         vertex_count = image->w * image->h;
@@ -214,28 +223,60 @@ public:
         vertex_processor<vertex_t, unsigned int>::prepare();
         vertex_processor<vertex_t, unsigned int>::submit(vertices);
 
-#       ifndef _DEBUG
         indices.draw();
-#       else
+#       ifdef _DEBUG
         draw_aabb(box);
 #       endif
 
         vertex_processor<vertex_t, unsigned int>::done();
 
-#       ifdef _DEBUG
+#       ifdef WIREFRAME
         show_normals(vertices, vertex_count);
 		show_wireframe<vertex_t, unsigned int>(vertices, vertex_count, indices.indices, indices.count);
 #       endif
     }
 
-    ~Terrain()
+    ~terrain_t()
     {
         if (vertices)
             delete[] vertices;
     }
 
 	size_t get_vertex_count() {return vertex_count;}
-	size_t get_index_count() {return indices.count;}
+	size_t get_index_count() {return indices.count;} };
+
+class Terrain: public IRenderable
+{
+terrain_t<terrain_vertex_t>     terrain;
+vec3                            position;
+vec3                            scaling;
+public:
+    Terrain(const char * path, const float px, const float py, const float pz, const float sx, const float sy, const float sz): position(px, py, pz), scaling(sx, sy, sz), terrain(path) {}
+    virtual void render();
+};
+
+template <>
+struct constructor_t<Terrain>
+{
+    static const char * name() {return "terrain";}
+    static Terrain * construct(std::istream & stream)
+    {
+        float x, y, z, sx, sy, sz;
+
+        std::string heightmap;
+
+        stream >> x >> y >> z >> sx >> sy >> sz;
+        //stream.ignore(1024, '\n');
+        std::getline(stream, heightmap);
+        cout << "heightmap: " << heightmap << endl;
+        stream.ignore(1024, '\n');
+        boost::trim(heightmap);
+        return new Terrain(heightmap.c_str(), x, y, z, sx, sy, sz);
+    }
+    static void add(Engine & engine, Terrain * terrain)
+    {
+        engine.add_renderable(terrain);
+    }
 };
 
 #endif /*TERRAIN_H*/
