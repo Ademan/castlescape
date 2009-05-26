@@ -186,10 +186,11 @@ public:
         for (int y = 0; y < image->h; y++)
             for (int x = 0; x < image->w; x++)
             {
+                size_t i = in(x, y) * image->format->BytesPerPixel;
                 color_t color = {
-                    ((unsigned char *)image->pixels)[in(x, y) * 4],
-                    ((unsigned char *)image->pixels)[in(x, y) * 4 + 1],
-                    ((unsigned char *)image->pixels)[in(x, y) * 4 + 2]
+                    ((unsigned char *)image->pixels)[i],
+                    ((unsigned char *)image->pixels)[i + 1],
+                    ((unsigned char *)image->pixels)[i + 2]
                                 };
                 vertex_processor <vertex_t, unsigned int>::generate(
                         vertices[in(x, y)],
