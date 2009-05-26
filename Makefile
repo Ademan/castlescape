@@ -10,16 +10,10 @@ EXEC=$(PWD)/$(BIN)
 
 CCFLAGS=-D_DEBUG
 
-HEADERS=src/terrain.h src/terrain_templates.h \
-		src/terrain_vertex.h src/math_types.h \
-		src/texture.h src/texture_array.h \
-		src/mouse.h src/input_handlers.h \
-		src/main.h src/util.h
-
 SOURCES = $(wildcard src/*.cpp)
 HEADERS = $(wildcard src/*.h)
 
-OBJECTS=bin/main_implementation.o bin/main.o bin/util.o bin/terrain_vertex.o bin/engine.o
+OBJECTS=bin/main_implementation.o bin/main.o bin/util.o bin/terrain_vertex.o bin/engine.o bin/view.o
 #OBJECTS=$(wildcard bin/*.o)
 
 #/$(BIN): bin/%.o
