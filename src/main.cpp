@@ -18,6 +18,7 @@
 #include "input_handlers.h"
 #include "timer.h"
 #include "engine.h"
+#include "view.h"
 
 using std::cout;
 using std::endl;
@@ -25,14 +26,11 @@ using std::ifstream;
 
 int main(int argc, char ** argv)
 {
-    IMouseHandler *     mouse_handler;
-    IKeyboardHandler *  key_handler;
-    Engine              engine;
-    Timer               timer;
+    Engine          engine;
+    Timer           timer;
+    View            view(640, 480);
 
     Main            main_object(640, 480, argc, argv);
-    key_handler =   &main_object;
-    mouse_handler = &main_object;
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
@@ -57,29 +55,33 @@ int main(int argc, char ** argv)
 
 	SDL_ShowCursor(SDL_DISABLE);
 
+    engine.add_keyboard_handler(&view);
+    engine.add_mouse_handler(&view);
+    engine.add_entity(&view);
+    engine.add_render_state(&view);
+
     while (true)
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        main_object.step();
         engine.step(timer.elapsed());
 
         while (SDL_PollEvent(&event))
             switch (event.type)
             {
             case SDL_KEYDOWN:
-                key_handler->key_down(event.key);
+                engine.key_down(event.key);
                 break;
             case SDL_KEYUP:
-                key_handler->key_up(event.key);
+                engine.key_up(event.key);
                 break;
             case SDL_MOUSEBUTTONDOWN:
-                mouse_handler->mouse_down(event.button);
+                engine.mouse_down(event.button);
                 break;
             case SDL_MOUSEBUTTONUP:
-                mouse_handler->mouse_up(event.button);
+                engine.mouse_up(event.button);
                 break;
             case SDL_MOUSEMOTION:
-                mouse_handler->mouse_move(event.motion);
+                engine.mouse_move(event.motion);
                 break;
             case SDL_QUIT:
                 return 0;
@@ -87,9 +89,10 @@ int main(int argc, char ** argv)
             default: break;
             }
 
-        main_object.set_view();
+        engine.begin_render();
         terrain->render();
         engine.render();
+        engine.end_render();
 #ifdef _DEBUG
         draw_compass();
 #endif

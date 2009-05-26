@@ -4,37 +4,18 @@
 #define MAIN_H
 
 #include <GL/gl.h>
-#include "input_handlers.h"
-#include "mouse.h"
-#include "camera.h"
 #include "terrain.h"
 #include "terrain_vertex.h"
 
-#define SENSITIVITY 0.001
-#define WIDTH   640
-#define HEIGHT  480
-
-class Main: public IMouseHandler, public IKeyboardHandler
+class Main
 {
-    Camera          camera;
-    Mouse           mouse;
     SDL_Surface *   window;
-    bool            mlook;
     float           last;
     float           elapsed;
-    float           x, y;
 public:
     Main(unsigned int width, unsigned int height, int argc, char ** argv);
 
-    virtual void mouse_down(SDL_MouseButtonEvent & event);
-    virtual void mouse_up(SDL_MouseButtonEvent & event);
-    virtual void mouse_move(SDL_MouseMotionEvent & event);
-
-    virtual void key_down(SDL_KeyboardEvent & event);
-    virtual void key_up(SDL_KeyboardEvent & event);
-
     void set_view();
-    void step();
     ~Main()
     {
         SDL_QuitSubSystem(SDL_INIT_VIDEO);
