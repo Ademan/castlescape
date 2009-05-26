@@ -34,6 +34,7 @@ int main(int argc, char ** argv)
     key_handler =   &main_object;
     mouse_handler = &main_object;
 
+	glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
     glMatrixMode(GL_MODELVIEW);
@@ -43,7 +44,7 @@ int main(int argc, char ** argv)
                           0x00 / 256.0,
                           0x00 / 256.0,
                           0.5};
-
+	glFrontFace(GL_CW);
     glEnable(GL_FOG);
     glFogfv(GL_FOG_COLOR, lava_color);
     glFogf(GL_FOG_START, 80);
