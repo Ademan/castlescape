@@ -23,6 +23,23 @@ using std::cout;
 using std::endl;
 using std::ifstream;
 
+void do_light()
+{
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glEnable(GL_COLOR_MATERIAL);
+	glShadeModel(GL_SMOOTH);
+	GLfloat lightpos[] = {0.0, 10, 0.0, 1.0};
+	glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
+	GLfloat white[] = {0.8f, 0.8f, 0.8f, 1.0f};
+	GLfloat cyan[] = {0.f, .8f, .8f, 1.f};
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, cyan);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+	GLfloat shininess[] = {50};
+	glMaterialfv(GL_FRONT, GL_SHININESS, shininess);
+}
+
+
 int main(int argc, char ** argv)
 {
     IMouseHandler *     mouse_handler;
@@ -33,6 +50,8 @@ int main(int argc, char ** argv)
     Main            main_object(640, 480, argc, argv);
     key_handler =   &main_object;
     mouse_handler = &main_object;
+
+	do_light();
 
 	glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
@@ -45,7 +64,7 @@ int main(int argc, char ** argv)
                           0x00 / 256.0,
                           0.5};
 	glFrontFace(GL_CW);
-    glEnable(GL_FOG);
+    //glEnable(GL_FOG);
     glFogfv(GL_FOG_COLOR, lava_color);
     glFogf(GL_FOG_START, 80);
     glFogf(GL_FOG_END, 200);

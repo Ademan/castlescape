@@ -124,6 +124,7 @@ struct vertex_processor<terrain_vertex_t, unsigned int>
     {
         glVertexPointer(3, GL_FLOAT, sizeof(terrain_vertex_t), &(vertices->x));
         glColorPointer(3, GL_FLOAT, sizeof(terrain_vertex_t), &(vertices->r));
+		glNormalPointer(GL_FLOAT, sizeof(terrain_vertex_t), &(vertices->nx));
     }
     static void done()
     {

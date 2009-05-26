@@ -8,7 +8,7 @@ INCLUDE=$(CML)
 BIN=tview
 EXEC=$(PWD)/$(BIN)
 
-#CCFLAGS=-D_DEBUG
+CCFLAGS=-D_DEBUG
 
 HEADERS=src/terrain.h src/terrain_templates.h \
 		src/terrain_vertex.h src/math_types.h \
