@@ -214,13 +214,17 @@ public:
         vertex_processor<vertex_t, unsigned int>::prepare();
         vertex_processor<vertex_t, unsigned int>::submit(vertices);
 
-        indices.draw();
+       // indices.draw();
         draw_aabb(box);
 
         vertex_processor<vertex_t, unsigned int>::done();
 
         show_normals(vertices, vertex_count);
+		show_wireframe<vertex_t, unsigned int>(vertices, vertex_count, indices.indices, indices.count);
     }
+
+	size_t get_vertex_count() {return vertex_count;}
+	size_t get_index_count() {return indices.count;}
 };
 
 #endif /*TERRAIN_H*/

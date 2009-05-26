@@ -43,6 +43,8 @@ Main::Main(unsigned int width, unsigned int height,
     }
     else
         terrain = new Terrain <terrain_vertex_t>(argv[1]);
+		cout << "Vertices: " << terrain->get_vertex_count() << endl;
+		cout << "Indices: " << terrain->get_index_count() << endl;
 
 }
 
