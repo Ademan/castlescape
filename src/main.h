@@ -10,8 +10,6 @@
 class Main
 {
     SDL_Surface *   window;
-    float           last;
-    float           elapsed;
 public:
     Main(unsigned int width, unsigned int height, int argc, char ** argv);
 

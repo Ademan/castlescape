@@ -8,7 +8,6 @@
 #include "entity.h"
 #include "input_handlers.h"
 
-//TODO: allocators to clean up after
 class Engine
 {
     typedef std::vector <IRenderable *> renderable_list;

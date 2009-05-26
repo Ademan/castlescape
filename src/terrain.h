@@ -228,6 +228,12 @@ public:
 #       endif
     }
 
+    ~Terrain()
+    {
+        if (vertices)
+            delete[] vertices;
+    }
+
 	size_t get_vertex_count() {return vertex_count;}
 	size_t get_index_count() {return indices.count;}
 };
