@@ -1,13 +1,15 @@
 #include <iostream>
 #include <cstdlib>
 
+#include <GL/gl.h>
 #include "window.h"
 
 using std::cout;
 using std::endl;
 
 Window::Window(unsigned int width, unsigned height,
-               const unsigned int bpp = 24, const unsigned int depth = 16)
+               const unsigned int bpp, const unsigned int depth,
+               const float clear_color[4], const float clear_depth)
 {
     SDL_InitSubSystem(SDL_INIT_VIDEO);
 
@@ -23,4 +25,7 @@ Window::Window(unsigned int width, unsigned height,
     {
         cout << "Failed to create window!!" << endl;
     }
+
+    glClearColor(clear_color[0], clear_color[1], clear_color[2], clear_color[3]);
+    glClearDepth(clear_depth);
 }

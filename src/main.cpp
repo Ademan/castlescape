@@ -31,7 +31,12 @@ int main(int argc, char ** argv)
     View            view(640, 480);
     RenderableOrbitingLight   light(64);
 
-    Window            window(640, 480, 24, 16);
+    float lava_color[] = {0x90 / 256.0,
+                          0x00 / 256.0,
+                          0x00 / 256.0,
+                          0.5};
+
+    Window            window(640, 480, 24, 16, lava_color, 1.0);
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
@@ -53,10 +58,6 @@ int main(int argc, char ** argv)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    float lava_color[] = {0x90 / 256.0,
-                          0x00 / 256.0,
-                          0x00 / 256.0,
-                          0.5};
 	glFrontFace(GL_CW);
     //glEnable(GL_FOG);
     glFogfv(GL_FOG_COLOR, lava_color);
@@ -64,8 +65,6 @@ int main(int argc, char ** argv)
     glFogf(GL_FOG_END, 200);
     glFogi(GL_FOG_MODE, GL_LINEAR);
 
-    glClearColor(lava_color[0], lava_color[1], lava_color[2], 1);
-    glClearDepth(1.0);
 
     SDL_Event   event;
 
