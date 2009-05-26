@@ -8,7 +8,7 @@ INCLUDE=$(CML)
 BIN=tview
 EXEC=$(PWD)/$(BIN)
 
-CCFLAGS=-D_DEBUG
+#CCFLAGS=-D_DEBUG
 
 SOURCES = $(wildcard src/*.cpp)
 HEADERS = $(wildcard src/*.h)
