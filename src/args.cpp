@@ -18,15 +18,9 @@ void construct(Engine & engine)
         cin.clear();
 
         if (type == constructor_t<OrbitingLight>::name())
-        {
-            OrbitingLight * light = constructor_t<OrbitingLight>::construct(cin);
-            constructor_t<OrbitingLight>::add(engine, light);
-        }
+            factory_t<OrbitingLight>::add(engine, cin);
         else if (type == constructor_t <Terrain>::name())
-        {
-            Terrain * terrain = constructor_t<Terrain>::construct(cin);
-            constructor_t<Terrain>::add(engine, terrain);
-        }
+            factory_t<Terrain>::add(engine, cin);
         else
         {
             cout << "Unrecognized type: " << type << endl;
