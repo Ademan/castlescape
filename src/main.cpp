@@ -30,19 +30,19 @@ void do_light()
 	glEnable(GL_LIGHT0);
 	glEnable(GL_COLOR_MATERIAL);
 	glShadeModel(GL_SMOOTH);
-	GLfloat lightpos[] = {0.0, 10, 0.0, 1.0};
+	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+	
+	GLfloat lightpos[] = {1.0, 1.0, 0.0, 0.0};
 	glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
+
 	GLfloat white[] = {0.0f, 0.0f, 0.0f, 0.0f};
-	GLfloat cyan[] = {0.f, .8f, .8f, 1.f};
+	GLfloat cyan[] = {0.0f, 0.0f, 0.0f, 1.0f};
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, cyan);
-	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
-	GLfloat shininess[] = {100};
-	glMaterialfv(GL_FRONT, GL_SHININESS, shininess);
 }
 
 void set_light_pos()
 {
-	GLfloat lightpos[] = {0.0, 10, 0.0, 1.0};
+	GLfloat lightpos[] = {1.0, 1.0, 0.0, 1.0};
 	glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
 }
 
