@@ -19,42 +19,19 @@
 #include "timer.h"
 #include "engine.h"
 #include "view.h"
+#include "light.h"
 
 using std::cout;
 using std::endl;
-using std::ifstream;
-
-void do_light()
-{
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-	glEnable(GL_COLOR_MATERIAL);
-	glShadeModel(GL_SMOOTH);
-	GLfloat lightpos[] = {0.0, 10, 0.0, 1.0};
-	glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
-	GLfloat white[] = {0.0f, 0.0f, 0.0f, 0.0f};
-	GLfloat cyan[] = {0.f, .8f, .8f, 1.f};
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, cyan);
-	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
-	GLfloat shininess[] = {100};
-	glMaterialfv(GL_FRONT, GL_SHININESS, shininess);
-}
-
-void set_light_pos()
-{
-	GLfloat lightpos[] = {0.0, 10, 0.0, 1.0};
-	glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
-}
 
 int main(int argc, char ** argv)
 {
     Engine          engine;
     Timer           timer;
     View            view(640, 480);
+    OrbitingLight   light(100);
 
     Main            main_object(640, 480, argc, argv);
-
-	do_light();
 
 	glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
@@ -85,6 +62,11 @@ int main(int argc, char ** argv)
     engine.add_entity(&view);
     engine.add_render_state(&view);
 
+    enable_lighting();
+    engine.add_render_state(&light);
+    engine.add_entity(&light);
+
+    timer.elapsed();
     while (true)
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -115,7 +97,7 @@ int main(int argc, char ** argv)
             }
 
         engine.begin_render();
-        set_light_pos();
+        //set_light_pos();
         terrain->render();
         engine.render();
         engine.end_render();
