@@ -29,7 +29,7 @@ int main(int argc, char ** argv)
     Engine          engine;
     Timer           timer;
     View            view(640, 480);
-    OrbitingLight   light(100);
+    OrbitingLight   light(64);
 
     Main            main_object(640, 480, argc, argv);
 
@@ -97,7 +97,6 @@ int main(int argc, char ** argv)
             }
 
         engine.begin_render();
-        //set_light_pos();
         terrain->render();
         engine.render();
         engine.end_render();
