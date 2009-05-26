@@ -214,13 +214,18 @@ public:
         vertex_processor<vertex_t, unsigned int>::prepare();
         vertex_processor<vertex_t, unsigned int>::submit(vertices);
 
-       // indices.draw();
+#       ifndef _DEBUG
+        indices.draw();
+#       else
         draw_aabb(box);
+#       endif
 
         vertex_processor<vertex_t, unsigned int>::done();
 
+#       ifdef _DEBUG
         show_normals(vertices, vertex_count);
 		show_wireframe<vertex_t, unsigned int>(vertices, vertex_count, indices.indices, indices.count);
+#       endif
     }
 
 	size_t get_vertex_count() {return vertex_count;}
