@@ -32,14 +32,19 @@ void do_light()
 	glShadeModel(GL_SMOOTH);
 	GLfloat lightpos[] = {0.0, 10, 0.0, 1.0};
 	glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
-	GLfloat white[] = {0.8f, 0.8f, 0.8f, 1.0f};
+	GLfloat white[] = {0.0f, 0.0f, 0.0f, 0.0f};
 	GLfloat cyan[] = {0.f, .8f, .8f, 1.f};
 	glMaterialfv(GL_FRONT, GL_DIFFUSE, cyan);
 	glMaterialfv(GL_FRONT, GL_SPECULAR, white);
-	GLfloat shininess[] = {50};
+	GLfloat shininess[] = {100};
 	glMaterialfv(GL_FRONT, GL_SHININESS, shininess);
 }
 
+void set_light_pos()
+{
+	GLfloat lightpos[] = {0.0, 10, 0.0, 1.0};
+	glLightfv(GL_LIGHT0, GL_POSITION, lightpos);
+}
 
 int main(int argc, char ** argv)
 {
@@ -110,6 +115,7 @@ int main(int argc, char ** argv)
             }
 
         engine.begin_render();
+        set_light_pos();
         terrain->render();
         engine.render();
         engine.end_render();

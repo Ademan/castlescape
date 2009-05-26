@@ -1,6 +1,6 @@
 - develop main loop interface
     - abstract main object interface
-    - abstract rendering
+    + abstract rendering
     - abstract collision detection
     - add "step" loop
     ?
@@ -11,7 +11,7 @@
      5. foreach renderable render
 - start creating castle generators
     - develop primitive functions
-    - IRenderable interface
+    + IRenderable interface
 - terrain collision
     - ICollidable interface
     - IEntity interface implementing step(time delta)
