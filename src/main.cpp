@@ -14,12 +14,12 @@
 #include "primitive.h"
 #include "mouse.h"
 #include "aabb.h"
-#include "main.h"
 #include "input_handlers.h"
 #include "timer.h"
 #include "engine.h"
 #include "view.h"
 #include "light.h"
+#include "window.h"
 
 using std::cout;
 using std::endl;
@@ -31,7 +31,21 @@ int main(int argc, char ** argv)
     View            view(640, 480);
     RenderableOrbitingLight   light(64);
 
-    Main            main_object(640, 480, argc, argv);
+    Window            window(640, 480, 24, 16);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(45.0, ((float)640)/480, 1.0, 1000.0);
+
+    if (argc != 2)
+    {
+        cout << "Need an image file!" << endl;
+        exit(1);
+    }
+ 
+    Terrain<terrain_vertex_t> terrain(argv[1]);
+    cout << "Vertices: " << terrain.get_vertex_count() << endl;
+    cout << "Indices: " << terrain.get_index_count() << endl;
 
 	glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
@@ -98,7 +112,7 @@ int main(int argc, char ** argv)
             }
 
         engine.begin_render();
-        terrain->render();
+        terrain.render();
         engine.render();
         engine.end_render();
 #ifdef _DEBUG
