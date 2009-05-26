@@ -3,8 +3,32 @@
 #ifndef TERRAIN_VERTEX_H
 #define TERRAIN_VERTEX_H
 
+#include <GL/gl.h>
+
 #include "terrain_templates.h"
+#include "vertex.h"
 #include "types.h"
+
+template <typename T>
+const T clamp(const T min, const T max, const T val)
+{
+    if (val < min) return min;
+    if (val > max) return max;
+    return val;
+}
+
+template <typename index_t>
+struct clamping_indexer_t
+{
+    size_t width;
+    size_t height;
+    clamping_indexer_t(const size_t _width, const size_t _height): width(_width), height(_height) {}
+    const index_t operator () (const int x, const int y)
+    {
+        return clamp(0, static_cast <int> (width), x)
+            + (clamp(0, static_cast <int> (height), y) * width);
+    }
+};
 
 struct terrain_vertex_t
 {
@@ -69,7 +93,22 @@ struct vertex_processor<terrain_vertex_t>
     static void postprocess(terrain_vertex_t * vertices,
                             const size_t width, const size_t height)
     {
-        for (;;);
+        clamping_indexer_t <int> in(width, height);
+        float vert_distance = vertices[0].x - vertices[1].x;
+        for (int y = 0; y < height; y++)
+            for (int x = 0; x < width; x++)
+            {
+                vec3 normal = norm_vertex(vertices[in(x, y)].y,
+                                          vertices[in(x, y + 1)].y, //north
+                                          vertices[in(x, y - 1)].y, //south
+                                          vertices[in(x + 1, y)].y, //east
+                                          vertices[in(x - 1, y)].y, //west
+                                          vert_distance);
+
+                vertices[in(x, y)].nx = normal[0];
+                vertices[in(x, y)].ny = normal[1];
+                vertices[in(x, y)].nz = normal[2];
+            }
 
     }
     static void prepare()
