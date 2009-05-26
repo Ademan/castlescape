@@ -4,7 +4,7 @@
 #define ARGS_H
 
 #include <istream>
-#include <type_traits>
+//#include <type_traits>
 #include <string>
 #include "engine.h"
 
@@ -19,7 +19,7 @@ struct constructor_t
 };
 
 //using std::tr1::is_base_of;
-using std::is_base_of;
+//using std::is_base_of;
 template <typename T>
 struct factory_t
 {

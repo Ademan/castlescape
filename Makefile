@@ -10,7 +10,7 @@ EXEC=$(PWD)/$(BIN)
 
 DEBUG=-D_DEBUG
 #CCFLAGS=-std=c++0x $(DEBUG)
-CCFLAGS=-std=gnu++0x $(DEBUG)
+#CCFLAGS=-std=gnu++0x $(DEBUG)
 
 SOURCES = $(wildcard src/*.cpp)
 HEADERS = $(wildcard src/*.h)
