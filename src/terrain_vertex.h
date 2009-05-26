@@ -118,6 +118,7 @@ struct vertex_processor<terrain_vertex_t, unsigned int>
     static void prepare()
     {
         glEnableClientState(GL_VERTEX_ARRAY);
+        glEnableClientState(GL_NORMAL_ARRAY);
         glEnableClientState(GL_COLOR_ARRAY);
     }
     static void submit(terrain_vertex_t * vertices)
@@ -129,6 +130,7 @@ struct vertex_processor<terrain_vertex_t, unsigned int>
     static void done()
     {
         glDisableClientState(GL_COLOR_ARRAY);
+        glDisableClientState(GL_NORMAL_ARRAY);
         glDisableClientState(GL_VERTEX_ARRAY);
     }
 };
