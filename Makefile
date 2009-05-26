@@ -13,7 +13,7 @@ EXEC=$(PWD)/$(BIN)
 SOURCES = $(wildcard src/*.cpp)
 HEADERS = $(wildcard src/*.h)
 
-OBJECTS=bin/main_implementation.o bin/main.o bin/util.o bin/terrain_vertex.o bin/engine.o bin/view.o bin/light.o bin/window.o
+OBJECTS=bin/main_implementation.o bin/main.o bin/util.o bin/terrain_vertex.o bin/engine.o bin/view.o bin/light.o bin/window.o bin/args.o
 #OBJECTS=$(wildcard bin/*.o)
 
 #/$(BIN): bin/%.o
@@ -29,4 +29,4 @@ clean:
 	rm $(BIN)
 
 test: $(BIN)
-	$(EXEC) media/height.png
+	$(EXEC) media/height.png < media/lights

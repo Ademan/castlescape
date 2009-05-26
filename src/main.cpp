@@ -20,6 +20,7 @@
 #include "view.h"
 #include "light.h"
 #include "window.h"
+#include "args.h"
 
 using std::cout;
 using std::endl;
@@ -29,7 +30,8 @@ int main(int argc, char ** argv)
     Engine          engine;
     Timer           timer;
     View            view(640, 480);
-    RenderableOrbitingLight   light(64);
+    //OrbitingLight   light(64, 1, 0, 0);
+    //RenderableOrbitingLight light2(64, 1, 1, 0);
 
     float lava_color[] = {0x90 / 256.0,
                           0x00 / 256.0,
@@ -76,9 +78,14 @@ int main(int argc, char ** argv)
     engine.add_render_state(&view);
 
     enable_lighting();
-    engine.add_render_state(&light);
+    /*engine.add_render_state(&light);
     engine.add_entity(&light);
-	engine.add_renderable(&light);
+
+    engine.add_render_state(&light2);
+    engine.add_entity(&light2);
+	engine.add_renderable(&light2);*/
+
+    construct(engine);
 
     timer.elapsed();
     while (true)
