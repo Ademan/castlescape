@@ -1,9 +1,11 @@
 #include <string>
 #include "args.h"
-#include "light.h"
+#include "light_factory.h"
+#include "terrain.h"
 
 using std::string;
 using std::cin;
+using std::cout;
 
 void construct(Engine & engine)
 {
@@ -11,32 +13,23 @@ void construct(Engine & engine)
     {
         string  type;
         cin >> type;
+        if (cin.eof()) break;
 
-        if (type == "orbit_light")
+        cin.clear();
+
+        if (type == constructor_t<OrbitingLight>::name())
         {
-            string axis;
-            cin >> axis;
-
-            OrbitingLight::Axis a;
-
-            if (axis == "xy")
-             a = OrbitingLight::XY;
-            else if (axis == "xz")
-             a = OrbitingLight::XZ;   
-            else
-             a = OrbitingLight::ZY;
-
-            float radius;
-            float r, g, b;
-
-            cin >> radius;
-            cin >> r >> g >> b;
-
-            //FIXME: introduces sweet memory leak
-            OrbitingLight * light = new OrbitingLight(a, radius, r, g, b);
-
-            engine.add_render_state(light);
-            engine.add_entity(light);
+            OrbitingLight * light = constructor_t<OrbitingLight>::construct(cin);
+            constructor_t<OrbitingLight>::add(engine, light);
+        }
+        else if (type == constructor_t <Terrain>::name())
+        {
+            Terrain * terrain = constructor_t<Terrain>::construct(cin);
+            constructor_t<Terrain>::add(engine, terrain);
+        }
+        else
+        {
+            cout << "Unrecognized type: " << type << endl;
         }
     }
 }
