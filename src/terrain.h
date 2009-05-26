@@ -201,6 +201,8 @@ public:
 
         SDL_FreeSurface(image);
         indices.generate(width, height);
+
+        vertex_processor<vertex_t>::postprocess(vertices, width, height);
     }
     const AABB & get_aabb() const {return box;}
     void render()
@@ -214,6 +216,8 @@ public:
         draw_aabb(box);
 
         vertex_processor<vertex_t>::done();
+
+        show_normals(vertices, vertex_count);
     }
 };
 

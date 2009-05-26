@@ -19,7 +19,7 @@ HEADERS=src/terrain.h src/terrain_templates.h \
 SOURCES = $(wildcard src/*.cpp)
 HEADERS = $(wildcard src/*.h)
 
-OBJECTS=bin/main_implementation.o bin/main.o bin/util.o
+OBJECTS=bin/main_implementation.o bin/main.o bin/util.o bin/terrain_vertex.o
 #OBJECTS=$(wildcard bin/*.o)
 
 #/$(BIN): bin/%.o

@@ -36,7 +36,7 @@ void show_normals(const vertex_t * vertices, const size_t count)
                    accessor_t<vertex_t>::get_ny(*i),
 
                    accessor_t<vertex_t>::get_z(*i) +
-                   accessor_t<vertex_t>::get_nz(*i),
+                   accessor_t<vertex_t>::get_nz(*i)
                    );
     }
     glEnd();
