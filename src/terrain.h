@@ -12,14 +12,15 @@
 #include <cassert>
 #include <iostream>
 using std::cout;
-using std::endl;
-
+using std::endl; 
 #include <cml/cml.h>
 #include <SDL/SDL_image.h>
 
 #include "aabb.h"
 #include "terrain_templates.h"
 #include "types.h"
+
+#include "terrain_vertex.h"
 
 template <>
 struct gl_index_t <unsigned int>
@@ -190,7 +191,7 @@ public:
                     ((unsigned char *)image->pixels)[in(x, y) * 4 + 1],
                     ((unsigned char *)image->pixels)[in(x, y) * 4 + 2]
                                 };
-                vertex_processor <vertex_t>::generate(
+                vertex_processor <vertex_t, unsigned int>::generate(
                         vertices[in(x, y)],
                         x, y,
                         width, height,
@@ -202,20 +203,20 @@ public:
         SDL_FreeSurface(image);
         indices.generate(width, height);
 
-        vertex_processor<vertex_t>::postprocess(vertices, width, height);
+        vertex_processor<vertex_t, unsigned int>::postprocess(vertices, vertex_count, indices.indices, indices.count);
     }
     const AABB & get_aabb() const {return box;}
     void render()
     {
         glColor3f(1.0, 1.0, 1.0);
 
-        vertex_processor<vertex_t>::prepare();
-        vertex_processor<vertex_t>::submit(vertices);
+        vertex_processor<vertex_t, unsigned int>::prepare();
+        vertex_processor<vertex_t, unsigned int>::submit(vertices);
 
         indices.draw();
         draw_aabb(box);
 
-        vertex_processor<vertex_t>::done();
+        vertex_processor<vertex_t, unsigned int>::done();
 
         show_normals(vertices, vertex_count);
     }

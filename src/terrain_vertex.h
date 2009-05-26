@@ -43,8 +43,10 @@ vec3 norm_vertex(const float here,
                  const float east, const float west,
                  const float width);
 
+//FIXME:!!
+//make index type agnostic
 template <>
-struct vertex_processor<terrain_vertex_t>
+struct vertex_processor<terrain_vertex_t, unsigned int>
 {
     static void generate(terrain_vertex_t & v, const int x, const int y,
                          const size_t width, const size_t height,
@@ -91,9 +93,12 @@ struct vertex_processor<terrain_vertex_t>
         }
     }
     static void postprocess(terrain_vertex_t * vertices,
-                            const size_t width, const size_t height)
+                            const size_t vertex_count,
+                            unsigned int * indices,
+                            const size_t index_count)
     {
-        clamping_indexer_t <int> in(width, height);
+        generate_normals <terrain_vertex_t, unsigned int, GL_TRIANGLES> (vertices, vertex_count, indices, index_count);
+        /*clamping_indexer_t <int> in(width, height);
         float vert_distance = vertices[0].x - vertices[1].x;
         for (int y = 0; y < height; y++)
             for (int x = 0; x < width; x++)
@@ -108,8 +113,7 @@ struct vertex_processor<terrain_vertex_t>
                 vertices[in(x, y)].nx = normal[0];
                 vertices[in(x, y)].ny = normal[1];
                 vertices[in(x, y)].nz = normal[2];
-            }
-
+            }*/
     }
     static void prepare()
     {
@@ -135,6 +139,10 @@ struct accessor_t<terrain_vertex_t>
     static float get_y(const terrain_vertex_t & v) {return v.y;}
     static float get_z(const terrain_vertex_t & v) {return v.z;}
 
+    static void set_x(terrain_vertex_t & v, const float x) {v.x = x;}
+    static void set_y(terrain_vertex_t & v, const float y) {v.y = y;}
+    static void set_z(terrain_vertex_t & v, const float z) {v.z = z;}
+
     static float get_r(const terrain_vertex_t & v) {return v.r;}
     static float get_g(const terrain_vertex_t & v) {return v.g;}
     static float get_b(const terrain_vertex_t & v) {return v.b;}
@@ -142,6 +150,10 @@ struct accessor_t<terrain_vertex_t>
     static float get_nx(const terrain_vertex_t & v) {return v.nx;}
     static float get_ny(const terrain_vertex_t & v) {return v.ny;}
     static float get_nz(const terrain_vertex_t & v) {return v.nz;}
+
+    static void set_nx(terrain_vertex_t & v, const float nx) {v.nx = nx;}
+    static void set_ny(terrain_vertex_t & v, const float ny) {v.ny = ny;}
+    static void set_nz(terrain_vertex_t & v, const float nz) {v.nz = nz;}
 };
 
 #endif /*TERRAIN_VERTEX_H*/
