@@ -16,6 +16,8 @@
 #include "aabb.h"
 #include "main.h"
 #include "input_handlers.h"
+#include "timer.h"
+#include "engine.h"
 
 using std::cout;
 using std::endl;
@@ -23,8 +25,10 @@ using std::ifstream;
 
 int main(int argc, char ** argv)
 {
-    IMouseHandler * mouse_handler;
-    IKeyboardHandler * key_handler;
+    IMouseHandler *     mouse_handler;
+    IKeyboardHandler *  key_handler;
+    Engine              engine;
+    Timer               timer;
 
     Main            main_object(640, 480, argc, argv);
     key_handler =   &main_object;
@@ -51,14 +55,13 @@ int main(int argc, char ** argv)
 
     SDL_Event   event;
 
-    //unsigned int last = SDL_GetTicks();
-
 	SDL_ShowCursor(SDL_DISABLE);
 
     while (true)
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         main_object.step();
+        engine.step(timer.elapsed());
 
         while (SDL_PollEvent(&event))
             switch (event.type)
@@ -86,6 +89,7 @@ int main(int argc, char ** argv)
 
         main_object.set_view();
         terrain->render();
+        engine.render();
 #ifdef _DEBUG
         draw_compass();
 #endif
