@@ -100,6 +100,7 @@ public:
 
 class OrbitingLight: public Light, public Entity
 {
+protected:
     float   time;
     float   radius;
 public:
@@ -109,6 +110,22 @@ public:
         light.diffuse[3] = 1.0;
     }
     virtual void step(const float dtime);   
+};
+
+class RenderableOrbitingLight: public Light, public Entity, public IRenderable
+{
+protected:
+	float   time;
+    float   radius;
+public:
+    RenderableOrbitingLight(const float _radius): radius(_radius), time(0)
+    {
+        light.diffuse[0] = 1.0;
+        light.diffuse[3] = 1.0;
+    }
+ 
+	virtual void step(const float dtime);   
+	virtual void render();
 };
 
 #endif /*LIGHT_H*/
