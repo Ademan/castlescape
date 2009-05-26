@@ -140,8 +140,8 @@ void Main::move(float x, float y)
 {
         camera.move(vec3(x * elapsed * MOVESPEED, 0, y * elapsed * MOVESPEED));
         //camera.collide();
-        vec3 newpos = terrain->get_aabb().clamp(camera.get_pos());
-        camera.set_pos(newpos);
+        //vec3 newpos = terrain->get_aabb().clamp(camera.get_pos());
+        //camera.set_pos(newpos);
 }
 
 Terrain<terrain_vertex_t> * terrain;
