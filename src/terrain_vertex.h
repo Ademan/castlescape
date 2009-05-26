@@ -95,14 +95,6 @@ struct accessor_t<terrain_vertex_t>
     static float get_x(const terrain_vertex_t & v) {return v.x;}
     static float get_y(const terrain_vertex_t & v) {return v.y;}
     static float get_z(const terrain_vertex_t & v) {return v.z;}
-
-    static float get_r(const terrain_vertex_t & v) {return v.r;}
-    static float get_g(const terrain_vertex_t & v) {return v.g;}
-    static float get_b(const terrain_vertex_t & v) {return v.b;}
-
-    static float get_nx(const terrain_vertex_t & v) {return v.nx;}
-    static float get_ny(const terrain_vertex_t & v) {return v.ny;}
-    static float get_nz(const terrain_vertex_t & v) {return v.nz;}
 };
 
 #endif /*TERRAIN_VERTEX_H*/
