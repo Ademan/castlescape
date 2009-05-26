@@ -222,6 +222,9 @@ public:
         show_normals(vertices, vertex_count);
 		show_wireframe<vertex_t, unsigned int>(vertices, vertex_count, indices.indices, indices.count);
     }
+
+	size_t get_vertex_count() {return vertex_count;}
+	size_t get_index_count() {return indices.count;}
 };
 
 #endif /*TERRAIN_H*/
