@@ -29,7 +29,7 @@ int main(int argc, char ** argv)
     Engine          engine;
     Timer           timer;
     View            view(640, 480);
-    OrbitingLight   light(64);
+    RenderableOrbitingLight   light(64);
 
     Main            main_object(640, 480, argc, argv);
 
@@ -65,6 +65,7 @@ int main(int argc, char ** argv)
     enable_lighting();
     engine.add_render_state(&light);
     engine.add_entity(&light);
+	engine.add_renderable(&light);
 
     timer.elapsed();
     while (true)
