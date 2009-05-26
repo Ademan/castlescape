@@ -10,9 +10,7 @@
 #include "types.h"
 #include "renderable.h"
 #include "entity.h"
-
-using std::cout;
-using std::endl;
+using std::cout; using std::endl;
 
 inline void enable_lighting()
 {
@@ -20,6 +18,8 @@ inline void enable_lighting()
 	glEnable(GL_COLOR_MATERIAL);
 	glShadeModel(GL_SMOOTH);
 }
+
+inline const GLuint gl_index(unsigned int index) {return GL_LIGHT0 + index;}
 
 struct light_t
 {
@@ -34,7 +34,6 @@ struct light_t
     float  diffuse[4];
     float  specular[4];
     //float  emission[4];
-    const GLuint gl_index(GLuint index) const {return GL_LIGHT0 + index;}
     light_t()
     {
         for (int i = 0; i < 4; i++)
@@ -89,10 +88,13 @@ struct light_t
     }
 };
 
+unsigned int next_light();
+
 class Light: public IRenderState
 {
 protected:
     light_t light;
+    unsigned int index;
 public:
     virtual void begin_render();
     virtual void end_render();
@@ -100,13 +102,23 @@ public:
 
 class OrbitingLight: public Light, public Entity
 {
+public:
+    enum Axis
+    {
+        XY,
+        XZ,
+        ZY
+    };
 protected:
+    Axis    axis;
     float   time;
     float   radius;
 public:
-    OrbitingLight(const float _radius): radius(_radius), time(0)
+    OrbitingLight(const Axis _axis, const float _radius, float r, float g, float b): radius(_radius), time(0), axis(_axis)
     {
-        light.diffuse[0] = 1.0;
+        light.diffuse[0] = r;
+        light.diffuse[1] = g;
+        light.diffuse[2] = b;
         light.diffuse[3] = 1.0;
     }
     virtual void step(const float dtime);   
@@ -118,12 +130,15 @@ protected:
 	float   time;
     float   radius;
 public:
-    RenderableOrbitingLight(const float _radius): radius(_radius), time(0)
+ 
+    RenderableOrbitingLight(const float _radius, float r, float g, float b): radius(_radius), time(0)
     {
-        light.diffuse[0] = 1.0;
+        light.diffuse[0] = r;
+        light.diffuse[1] = g;
+        light.diffuse[2] = b;
         light.diffuse[3] = 1.0;
     }
- 
+
 	virtual void step(const float dtime);   
 	virtual void render();
 };
