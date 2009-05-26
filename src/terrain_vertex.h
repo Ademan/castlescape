@@ -52,8 +52,8 @@ struct vertex_processor<terrain_vertex_t, unsigned int>
                          const size_t width, const size_t height,
                          color_t color)
     {
-        v.x = x;
-        v.z = y; // "terrain space"s y is world z
+        v.x = x - width / 2.0;
+        v.z = y - width / 2.0;
 
         int red = color[0];
 
