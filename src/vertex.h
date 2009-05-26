@@ -66,6 +66,42 @@ void set_normal(vertex_t & v, const vec3 & n)
     accessor_t<vertex_t>::set_nz(v, n[2]);
 }
 
+template <typename vertex_t, typename index_t>
+void show_wireframe(const vertex_t * vertices, const size_t vcount, index_t * indices, const size_t icount)
+{
+	glColor3f(1, 1, 1);
+	glBegin(GL_LINES);
+	
+	for (int i = 0; i < icount; i += 3)
+	{
+		glVertex3f(accessor_t<vertex_t>::get_x(vertices[indices[i]]),
+				   accessor_t<vertex_t>::get_y(vertices[indices[i]]),
+				   accessor_t<vertex_t>::get_z(vertices[indices[i]]));
+		
+		glVertex3f(accessor_t<vertex_t>::get_x(vertices[indices[i + 1]]),
+				   accessor_t<vertex_t>::get_y(vertices[indices[i + 1]]),
+				   accessor_t<vertex_t>::get_z(vertices[indices[i + 1]]));
+		
+		glVertex3f(accessor_t<vertex_t>::get_x(vertices[indices[i + 1]]),
+				   accessor_t<vertex_t>::get_y(vertices[indices[i + 1]]),
+				   accessor_t<vertex_t>::get_z(vertices[indices[i + 1]]));
+
+		glVertex3f(accessor_t<vertex_t>::get_x(vertices[indices[i + 2]]),
+				   accessor_t<vertex_t>::get_y(vertices[indices[i + 2]]),
+				   accessor_t<vertex_t>::get_z(vertices[indices[i + 2]]));
+		
+		glVertex3f(accessor_t<vertex_t>::get_x(vertices[indices[i]]),
+				   accessor_t<vertex_t>::get_y(vertices[indices[i]]),
+				   accessor_t<vertex_t>::get_z(vertices[indices[i]]));
+		
+		glVertex3f(accessor_t<vertex_t>::get_x(vertices[indices[i + 2]]),
+				   accessor_t<vertex_t>::get_y(vertices[indices[i + 2]]),
+				   accessor_t<vertex_t>::get_z(vertices[indices[i + 2]]));
+	}
+
+	glEnd();
+}
+
 template <typename vertex_t>
 void show_normals(const vertex_t * vertices, const size_t count)
 {
