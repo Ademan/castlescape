@@ -11,11 +11,12 @@ EXEC=$(PWD)/$(BIN)
 DEBUG=-D_DEBUG
 #CCFLAGS=-std=c++0x $(DEBUG)
 #CCFLAGS=-std=gnu++0x $(DEBUG)
+CCFLAGS=$(DEBUG)
 
 SOURCES = $(wildcard src/*.cpp)
 HEADERS = $(wildcard src/*.h)
 
-OBJECTS=bin/main.o bin/util.o bin/terrain_vertex.o bin/engine.o bin/view.o bin/light.o bin/window.o bin/args.o bin/terrain.o
+OBJECTS=bin/main.o bin/util.o bin/terrain_vertex.o bin/engine.o bin/view.o bin/light.o bin/window.o bin/args.o bin/terrain.o bin/castle.o
 #OBJECTS=$(wildcard bin/*.o)
 
 #/$(BIN): bin/%.o

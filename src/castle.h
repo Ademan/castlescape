@@ -5,14 +5,22 @@
 
 #include <vector>
 #include "renderable.h"
+#include "transform.h"
 
+typedef transform_t <euler_rotation_t> castle_transform;
 
+struct cube_with_battlements
+{
+    std::vector <castle_transform>  battlements;
+    castle_transform                body;
+};
 
 class Castle: public IRenderable
 {
-    std::vector <cube_t>  cubes;
+    cube_with_battlements keep;
+    cube_with_battlements body;
 public:
-    Castle()
+    Castle();
     virtual void render();
 };
 

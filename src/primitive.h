@@ -10,6 +10,7 @@ struct cone_vertex_t
 
 inline void draw_compass()
 {
+    glDisable(GL_LIGHTING);
     glBegin(GL_LINES);
     glColor3f(1, 0, 0);
     glVertex3f(0, 0, 0);
@@ -23,6 +24,7 @@ inline void draw_compass()
     glVertex3f(0, 0, 0);
     glVertex3f(0, 0, 1);
     glEnd();
+    glEnable(GL_LIGHTING);
 }
 
 //TODO: Make this draw triangles instead of lines!!!

@@ -25,6 +25,7 @@ void construct(Engine & engine)
         else
         {
             cout << "Unrecognized type: " << type << endl;
+            cin.ignore(1024, '\n');
         }
     }
 }
