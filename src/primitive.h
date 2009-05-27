@@ -124,16 +124,19 @@ inline void draw_cube()
     glBegin(GL_QUADS);
         glNormal3f(0, 0, -1);
         z_plane(-0.5, 1);
+
         glNormal3f(0, 0, 1);
         z_plane_positive(0.5, 1);
 
         glNormal3f(0, -1, 0);
         y_plane_down(-0.5, 1);
+
         glNormal3f(0, 1, 0);
         y_plane_up(0.5, 1);
 
         glNormal3f(-1, 0, 0);
         x_plane(-0.5, 1);
+
         glNormal3f(1, 0, 0);
         x_plane_positive(0.5, 1);
     glEnd();
