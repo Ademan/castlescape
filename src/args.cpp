@@ -14,8 +14,9 @@ void construct(Engine & engine)
         string  type;
         cin >> type;
         if (cin.eof()) break;
+        cout << "type: " << type << endl;
 
-        cin.clear();
+        //cin.clear();
 
         if (type == constructor_t<OrbitingLight>::name())
             factory_t<OrbitingLight>::add(engine, cin);

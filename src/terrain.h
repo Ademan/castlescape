@@ -251,7 +251,10 @@ terrain_t<terrain_vertex_t>     terrain;
 vec3                            position;
 vec3                            scaling;
 public:
-    Terrain(const char * path, const float px, const float py, const float pz, const float sx, const float sy, const float sz): position(px, py, pz), scaling(sx, sy, sz), terrain(path) {}
+    Terrain(const char * path,
+            const float px, const float py, const float pz,
+            const float sx, const float sy, const float sz):
+            position(px, py, pz), scaling(sx, sy, sz), terrain(path) {}
     virtual void render();
 };
 
@@ -266,11 +269,17 @@ struct constructor_t<Terrain>
         std::string heightmap;
 
         stream >> x >> y >> z >> sx >> sy >> sz;
-        //stream.ignore(1024, '\n');
+        
         std::getline(stream, heightmap);
-        cout << "heightmap: " << heightmap << endl;
-        stream.ignore(1024, '\n');
+        //stream.ignore(128, '\n');
+
         boost::trim(heightmap);
+#       ifdef _DEBUG
+        cout << x << " " << y << " " << z << endl;
+        cout << sx << " " << sy << " " << sz << endl;
+
+        cout << "heightmap: \"" << heightmap << '\"' << endl;
+#       endif
         return new Terrain(heightmap.c_str(), x, y, z, sx, sy, sz);
     }
     static void add(Engine & engine, Terrain * terrain)

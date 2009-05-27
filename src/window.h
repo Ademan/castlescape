@@ -16,4 +16,5 @@ public:
         SDL_QuitSubSystem(SDL_INIT_VIDEO);
     }
 };
+
 #endif /*VIEWSYSTEM_H*/
