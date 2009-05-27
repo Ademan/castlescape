@@ -10,6 +10,7 @@ struct cone_vertex_t
 
 inline void draw_compass()
 {
+    glDisable(GL_LIGHTING);
     glBegin(GL_LINES);
     glColor3f(1, 0, 0);
     glVertex3f(0, 0, 0);
@@ -23,6 +24,7 @@ inline void draw_compass()
     glVertex3f(0, 0, 0);
     glVertex3f(0, 0, 1);
     glEnd();
+    glEnable(GL_LIGHTING);
 }
 
 //TODO: Make this draw triangles instead of lines!!!
@@ -67,6 +69,74 @@ inline void draw_cone(const float xoffset, const float yoffset, const float zoff
 		glVertex3f(xoffset, yoffset, c);
 		glVertex3f(xoffset, yoffset, d);
 	glEnd();
+}
+
+inline void y_plane_up(const float y, const float width)
+{
+    glVertex3f(width / -2.0, y, width / -2.0);
+    glVertex3f(width / 2.0, y, width / -2.0);
+    glVertex3f(width / 2.0, y, width / 2.0);
+    glVertex3f(width / -2.0, y, width / 2.0);
+}
+
+inline void y_plane_down(const float y, const float width)
+{
+    glVertex3f(width / -2.0, y, width / -2.0);
+    glVertex3f(width / -2.0, y, width / 2.0);
+    glVertex3f(width / 2.0, y, width / 2.0);
+    glVertex3f(width / 2.0, y, width / -2.0);
+}
+
+inline void x_plane(const float x, const float width)
+{
+    glVertex3f(x, width / -2.0, width / -2.0);
+    glVertex3f(x, width / 2.0, width / -2.0);
+    glVertex3f(x, width / 2.0, width / 2.0);
+    glVertex3f(x, width / -2.0, width / 2.0);
+}
+
+inline void x_plane_positive(const float x, const float width)
+{
+    glVertex3f(x, width / 2.0, width / -2.0);
+    glVertex3f(x, width / -2.0, width / -2.0);
+    glVertex3f(x, width / -2.0, width / 2.0);
+    glVertex3f(x, width / 2.0, width / 2.0);
+}
+
+inline void z_plane(const float z, const float width)
+{
+    glVertex3f(width / -2.0, width / -2.0, z);
+    glVertex3f(width / 2.0, width / -2.0, z);
+    glVertex3f(width / 2.0, width / 2.0, z);
+    glVertex3f(width / -2.0, width / 2.0, z);
+}
+
+inline void z_plane_positive(const float z, const float width)
+{
+    glVertex3f(width / 2.0, width / -2.0, z);
+    glVertex3f(width / -2.0, width / -2.0, z);
+    glVertex3f(width / -2.0, width / 2.0, z);
+    glVertex3f(width / 2.0, width / 2.0, z);
+}
+
+inline void draw_cube()
+{
+    glBegin(GL_QUADS);
+        glNormal3f(0, 0, -1);
+        z_plane(-0.5, 1);
+        glNormal3f(0, 0, 1);
+        z_plane_positive(0.5, 1);
+
+        glNormal3f(0, -1, 0);
+        y_plane_down(-0.5, 1);
+        glNormal3f(0, 1, 0);
+        y_plane_up(0.5, 1);
+
+        glNormal3f(-1, 0, 0);
+        x_plane(-0.5, 1);
+        glNormal3f(1, 0, 0);
+        x_plane_positive(0.5, 1);
+    glEnd();
 }
 
 #endif

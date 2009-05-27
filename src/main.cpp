@@ -21,15 +21,18 @@
 #include "light.h"
 #include "window.h"
 #include "args.h"
+#include "castle.h"
 
 using std::cout;
 using std::endl;
 
 int main(int argc, char ** argv)
 {
+    srand(time(NULL));
     Engine          engine;
     Timer           timer;
     View            view(640, 480);
+    Castle          castle;
     //OrbitingLight   light(64, 1, 0, 0);
     //RenderableOrbitingLight light2(64, 1, 1, 0);
 
@@ -72,12 +75,8 @@ int main(int argc, char ** argv)
     engine.add_render_state(&view);
 
     enable_lighting();
-    /*engine.add_render_state(&light);
-    engine.add_entity(&light);
-
-    engine.add_render_state(&light2);
-    engine.add_entity(&light2);
-	engine.add_renderable(&light2);*/
+    //FIXME: remove later
+    engine.add_renderable(&castle);
 
     construct(engine);
 
@@ -112,7 +111,6 @@ int main(int argc, char ** argv)
             }
 
         engine.begin_render();
-        //terrain.render();
         engine.render();
         engine.end_render();
 #ifdef _DEBUG

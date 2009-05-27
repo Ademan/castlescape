@@ -12,9 +12,17 @@ void Terrain::render()
     matrix_scale(scale, scaling);
     matrix_translation(translation, position);
 
+    /*for (int j = 0; j < 4; j++)
+    {
+        for (int i = 0; i < 4; i++)
+            cout << " " << translation(i, j);
+        cout << endl;
+    }*/
+
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
-    glMultMatrixf((translation * scale).data());
+    glMultMatrixf(translation.data());
+    glMultMatrixf(scale.data());
 
     terrain.render();
 

@@ -3,8 +3,8 @@
 #ifndef ARGS_H
 #define ARGS_H
 
-#include <istream>
-//#include <type_traits>
+//#include <istream>
+#include <iostream>
 #include <string>
 #include "engine.h"
 
@@ -18,22 +18,14 @@ struct constructor_t
     static void add(Engine & engine, T * object);
 };
 
-//using std::tr1::is_base_of;
-//using std::is_base_of;
 template <typename T>
 struct factory_t
 {
-    /*(static void add(Engine & engine, T * object)
+    static void add(Engine & engine, std::istream & stream)
     {
-        if (is_base_of <IRenderable, T>::value)
-            engine.add_renderable(object);
-
-        if (is_base_of <Entity, T>::value)
-            engine.add_entity(object);
-
-        if (is_base_of <IRenderState, T>::value)
-            engine.add_render_state(object);
-    }*/
+        T * object = constructor_t<T>::construct(std::cin);
+        constructor_t<T>::add(engine, object);
+    }
 };
 
 

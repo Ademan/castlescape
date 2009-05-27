@@ -1,5 +1,4 @@
 #pragma once
-
 #ifndef MATH_TYPES_H
 #define MATH_TYPES_H
 
@@ -18,7 +17,6 @@ typedef cml::quaternionf_p  pquat;
 typedef cml::quaternionf_n  nquat;
 
 typedef pquat               quat;
-
 
 /*
  *
