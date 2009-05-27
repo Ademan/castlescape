@@ -10,6 +10,19 @@
 #include "types.h"
 
 template <typename T>
+struct v_color
+{
+	T r, g, b;
+	v_color() {}
+	v_color(const v_color & n): r(n.r / 256.0), g(n.g / 256.0), b(n.b / 256.0) {}
+	v_color(const T _r, const T _g, const T _b): r(_r / 256.0), g(_g / 256.0), b(_b / 256.0) {}
+	void set_r(const T _r) { r = _r / 256.0; }
+	void set_g(const T _g) { b = _g / 256.0; }
+	void set_b(const T _b) { b = _b / 256.0; }
+	const v_color operator- (const v_color & rhs) const { return v_color(r - rhs.r, g - rhs.g, b - rhs.b); }
+};
+
+template <typename T>
 const T clamp(const T min, const T max, const T val)
 {
     if (val < min) return min;
@@ -48,6 +61,16 @@ vec3 norm_vertex(const float here,
 template <>
 struct vertex_processor<terrain_vertex_t, unsigned int>
 {
+	static float highest(const terrain_vertex_t * vertices, const size_t vertex_count)
+	{
+		float highest = -999999999.0f;
+		for (int i = 0; i < vertex_count; i++)
+			if (vertices[i].y > highest)
+				highest = vertices[i].y;
+
+		return highest;
+	}
+
     static void generate(terrain_vertex_t & v, const int x, const int y,
                          const size_t width, const size_t height,
                          color_t color)
@@ -57,17 +80,21 @@ struct vertex_processor<terrain_vertex_t, unsigned int>
 
         int red = color[0];
 
+		v_color<float> low(0xff, 0x15, 0x00);
+		v_color<float> med(0x77, 0x4c, 0x0f);
+		v_color<float> low_med_diff = med - low;
+
         v.y = red / 16.0;
 
         v.r = v.g = v.b = red / 256.0;
 
-        if (v.r < 0.1)
+        /*if (v.r < 0.1)
         {
             float orig = (v.r + 0.4) * 1.5;
 
-            v.r = 0xff / 256.0;
-            v.g = 0x15 / 256.0;
-            v.b = 0x00 / 256.0;
+            v.r = low.r;
+            v.g = low.g;
+            v.b = low.b;
 
             v.r *= orig;
             v.b *= orig;
@@ -77,9 +104,9 @@ struct vertex_processor<terrain_vertex_t, unsigned int>
         {
             float orig = v.r * 1.5;
 
-            v.r = 0x77 / 256.0;
-            v.g = 0x4C / 256.0;
-            v.b = 0x0f / 256.0;
+            v.r = med.r;
+            v.g = med.g;
+            v.b = med.b;
 
             v.r *= orig;
             v.b *= orig;
@@ -90,7 +117,7 @@ struct vertex_processor<terrain_vertex_t, unsigned int>
         {
             float orig = v.r * 1.5;
             v.r = v.g = v.b = orig * 0.5;
-        }
+        }*/
     }
     static void postprocess(terrain_vertex_t * vertices,
                             const size_t vertex_count,
