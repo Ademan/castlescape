@@ -3,6 +3,7 @@
 #ifndef TERRAIN_VERTEX_H
 #define TERRAIN_VERTEX_H
 
+#include <iostream>
 #include <GL/gl.h>
 
 #include "terrain_templates.h"
@@ -14,13 +15,24 @@ struct v_color
 {
 	T r, g, b;
 	v_color() {}
-	v_color(const v_color & n): r(n.r / 256.0), g(n.g / 256.0), b(n.b / 256.0) {}
-	v_color(const T _r, const T _g, const T _b): r(_r / 256.0), g(_g / 256.0), b(_b / 256.0) {}
-	void set_r(const T _r) { r = _r / 256.0; }
-	void set_g(const T _g) { b = _g / 256.0; }
-	void set_b(const T _b) { b = _b / 256.0; }
-	const v_color operator- (const v_color & rhs) const { return v_color(r - rhs.r, g - rhs.g, b - rhs.b); }
+	v_color(const v_color & n): r(n.r), g(n.g), b(n.b) {}
+	v_color(const T _r, const T _g, const T _b): r(_r), g(_g), b(_b) {}
+	const v_color adjust() { return v_color(r / 255.0, g / 255.0, b / 255.0); }
+	const v_color operator- (const v_color & rhs) const { return v_color(r - rhs.r, g - rhs.g, b - rhs.b); } 
+	const v_color correct()
+	{
+		float nr, ng, nb;
+		if (r < 0) nr = 0;
+		if (r > 1) nr = 1;
+		if (g < 0) ng = 0;
+		if (g > 1) ng = 1;
+		if (b < 0) nb = 0;
+		if (b > 1) nb = 1;
+		return v_color(nr, ng, nb);
+	}
 };
+
+typedef v_color<float> v_colorf;
 
 template <typename T>
 const T clamp(const T min, const T max, const T val)
@@ -79,53 +91,68 @@ struct vertex_processor<terrain_vertex_t, unsigned int>
         v.z = y - width / 2.0;
 
         int red = color[0];
-
-		v_color<float> low(0xff, 0x15, 0x00);
-		v_color<float> med(0x77, 0x4c, 0x0f);
-		v_color<float> low_med_diff = med - low;
-
         v.y = red / 16.0;
+        v.r = v.g = v.b = red / 255.0;
+	}
 
-        v.r = v.g = v.b = red / 256.0;
-
-        /*if (v.r < 0.1)
-        {
-            float orig = (v.r + 0.4) * 1.5;
-
-            v.r = low.r;
-            v.g = low.g;
-            v.b = low.b;
-
-            v.r *= orig;
-            v.b *= orig;
-            v.g *= orig;
-        }
-        else if (v.r < 0.5)
-        {
-            float orig = v.r * 1.5;
-
-            v.r = med.r;
-            v.g = med.g;
-            v.b = med.b;
-
-            v.r *= orig;
-            v.b *= orig;
-            v.g *= orig;
-
-        }
-        else
-        {
-            float orig = v.r * 1.5;
-            v.r = v.g = v.b = orig * 0.5;
-        }*/
-    }
+	static void color_vertex(terrain_vertex_t & v, const float highest,
+							 const v_colorf * colors, const float * v_heights, 
+							 const size_t color_count)
+	{
+		v_colorf orig((v.r + 0.4) * 1.5, (v.g + 0.4) * 1.5, (v.b + 0.4) * 1.5);
+		float percentage = v.y / highest; 
+		for (int i = 0; i < color_count - 1; i++)
+		{
+			v_colorf grade = colors[i] - colors[i + 1];
+			if (percentage <= v_heights[i])
+			{
+				float grade_percent = percentage * (v_heights[i+1] - v_heights[i]);
+				v.r = colors[i].r + ((grade.r) * (grade_percent));
+				v.g = colors[i].g + ((grade.g) * (grade_percent));
+				v.b = colors[i].b + ((grade.b) * (grade_percent));
+				break;
+			}
+			else
+				v.r = colors[color_count - 1].r;
+				v.g = colors[color_count - 1].g;
+				v.b = colors[color_count - 1].b;
+		}
+		v.r *= orig.r;
+		v.g *= orig.g;
+		v.b *= orig.b;
+	}
+      
     static void postprocess(terrain_vertex_t * vertices,
                             const size_t vertex_count,
                             unsigned int * indices,
                             const size_t index_count)
     {
         generate_normals <terrain_vertex_t, unsigned int, GL_TRIANGLES> (vertices, vertex_count, indices, index_count);
+
+		/*v_colorf low(0xff, 0x15, 0x00); //orangy red
+		v_colorf med(0x77, 0x4c, 0x0f); //brown
+		v_colorf high(0xee, 0xee, 0xee); //gray
+		v_colorf colors[] = {v_colorf(low.adjust()), v_colorf(med.adjust()), v_colorf(high.adjust())};
+		float heights[] = {.1, .5, .95};*/
+
+		v_colorf red(0xff, 0x00, 0x00);
+		v_colorf orange(0xff, 0x7f, 0x00);
+		v_colorf yellow(0xff, 0xff, 0x00);
+		v_colorf green(0x00, 0xff, 0x00);
+		v_colorf blue(0x00, 0x00, 0xff);
+		v_colorf purple(0xff, 0x00, 0xff);
+
+		float heights[] = {.166, .333, .5, .666, .833, 2.0};
+		v_colorf colors[] = {v_colorf(red.adjust()), v_colorf(orange.adjust()), v_colorf(yellow.adjust()),
+							 v_colorf(green.adjust()), v_colorf(blue.adjust()), v_colorf(purple.adjust())};
+
+		float high_v = highest(vertices, vertex_count);
+		
+		for (int i = 0; i < vertex_count; i++)
+			color_vertex(vertices[i], high_v, colors, heights, 6);
+
         /*clamping_indexer_t <int> in(width, height);
+		 *
         float vert_distance = vertices[0].x - vertices[1].x;
         for (int y = 0; y < height; y++)
             for (int x = 0; x < width; x++)

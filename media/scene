@@ -1,4 +1,2 @@
-orbit_light xy 72 1 0 0
-orbit_light xz 100 0 1 0
-orbit_light zy 23 0 0 1
+orbit_light zy 23 1 1 1
 terrain 0 0 0 1 1 1 media/height.png
