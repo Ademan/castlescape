@@ -104,7 +104,6 @@ struct vertex_processor<terrain_vertex_t, unsigned int>
 		for (int i = 0; i < color_count - 1; i++)
 		{
 			v_colorf grade = colors[i] - colors[i + 1];
-			//grade = grade.correct();
 			if (percentage <= v_heights[i])
 			{
 				float grade_percent = percentage * (v_heights[i+1] - v_heights[i]);
@@ -141,7 +140,7 @@ struct vertex_processor<terrain_vertex_t, unsigned int>
 		v_colorf yellow(0xff, 0xff, 0x00);
 		v_colorf green(0x00, 0xff, 0x00);
 		v_colorf blue(0x00, 0x00, 0xff);
-		v_colorf purple(0xff, 0x44, 0xff);
+		v_colorf purple(0xff, 0x00, 0xff);
 
 		float heights[] = {.166, .333, .5, .666, .833, 2.0};
 		v_colorf colors[] = {v_colorf(red.adjust()), v_colorf(orange.adjust()), v_colorf(yellow.adjust()),
