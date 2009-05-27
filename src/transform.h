@@ -40,7 +40,9 @@ struct scaling_t
         mat4 result;
         cml::matrix_scale(result, scaling);
         glMultMatrixf(result.data());
-    } }; 
+    }
+}; 
+
 template <typename rotation_t = euler_rotation_t>
 struct transform_t
 {
