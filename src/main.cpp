@@ -112,7 +112,6 @@ int main(int argc, char ** argv)
             }
 
         engine.begin_render();
-        //terrain.render();
         engine.render();
         engine.end_render();
 #ifdef _DEBUG

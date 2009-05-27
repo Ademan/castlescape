@@ -19,6 +19,37 @@ typedef cml::quaternionf_n  nquat;
 
 typedef pquat               quat;
 
+using cml::matrix_rotation_euler;
+
+struct euler_rotation_t
+{
+    vec3 angles;
+    mat4 matrix()
+    {
+        mat4 result;
+        matrix_rotation_euler(result, angles[0], angles[1], angles[2], cml::euler_order_yxz);
+        return result;
+    }
+};
+
+template <typename rotation_t = euler_rotation_t>
+struct transform_t
+{
+    rotation_t  rotation;
+    vec3        position;
+    vec3        scaling;
+    
+    mat4 matrix()
+    {
+        mat4 translation;
+        mat4 scale;
+
+        matrix_translation(translation, position);
+        matrix_scale(scale, scaling);
+
+        return translation * rotation * scale;
+    }
+};
 
 /*
  *
