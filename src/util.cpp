@@ -1,3 +1,5 @@
+#include <SDL/SDL.h>
+
 #include "util.h"
 
 static SDL_Event quit_event = {SDL_QUIT};

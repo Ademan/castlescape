@@ -13,6 +13,9 @@ struct cube_with_battlements
 {
     std::vector <castle_transform>  battlements;
     castle_transform                body;
+    void generate_corners(float bwidth);
+    void generate_battlements();
+    void draw();
 };
 
 class Castle: public IRenderable
