@@ -10,7 +10,11 @@ using std::endl;
 #define MOVESPEED 25
 #define SENSITIVITY 0.001
 
-View::View(unsigned int width, unsigned int height): mlook(true), mouse(&camera, width, height, SENSITIVITY), x(0), y(0) {}
+View::View(unsigned int width, unsigned int height): mlook(true), mouse(&camera, width, height, SENSITIVITY), x(0), y(0) {
+
+	vec3 cpos(0, 25, 0);
+	camera.set_pos(cpos);
+}
 
 void View::mouse_down(SDL_MouseButtonEvent & event)
 {
