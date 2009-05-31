@@ -22,6 +22,8 @@ void construct(Engine & engine)
             factory_t<OrbitingLight>::add(engine, cin);
         else if (type == constructor_t <Terrain>::name())
             factory_t<Terrain>::add(engine, cin);
+        else if (type == constructor_t <RenderableOrbitingLight>::name())
+            factory_t<RenderableOrbitingLight>::add(engine, cin);
         else
         {
             cout << "Unrecognized type: " << type << endl;

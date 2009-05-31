@@ -42,7 +42,6 @@ void cube_with_battlements::generate_corners(float bwidth)
 
     battlement.position.position[1] = bwidth * h / 2.0;
 
-
     //southwest
     battlement.position.position[0] = -hbase + hwidth;
     battlement.position.position[2] = -hbase + hwidth;
