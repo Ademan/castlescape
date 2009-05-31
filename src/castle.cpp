@@ -11,7 +11,8 @@
 #include "util.h"
 
 using std::cout;
-using std::rand; using std::srand;
+using std::rand;
+using std::srand;
 using std::time;
 
 const int random(const int low, const int high)
@@ -69,8 +70,8 @@ void cube_with_battlements::generate_battlements()
     float r = 0.5; //gap ratio
     float t = 0.4; //thickness ratio
     //FIXME: bad math!
-    //float b = body.scaling.scaling[0] / (n + r*n - r);
-    float b = 0.125;
+    float b = 1 / (n + r*n - r);
+    //float b = 0.125;
     float g = r * b;
 
     castle_transform battlement;
