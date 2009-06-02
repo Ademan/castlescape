@@ -5,6 +5,11 @@
 #include <SDL/SDL_image.h>
 #include <GL/gl.h>
 
+inline GLenum texture_unit(const unsigned int i)
+{
+    return GL_TEXTURE0 + i;
+}
+
 struct texture_t
 {
     GLuint        texture;
@@ -50,8 +55,8 @@ struct texture_t
     }
     void bind(unsigned int unit)
     {
-        glEnable(GL_TEXTURE0 + unit);
-        glActiveTexture(GL_TEXTURE0 + unit);
+        glEnable(texture_unit(unit));
+        glActiveTexture(texture_unit(unit));
         glBindTexture(GL_TEXTURE_2D, texture);
     }
     ~texture_t()

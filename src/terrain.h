@@ -27,6 +27,8 @@ using std::endl;
 
 #include "util.h"
 
+#include "texture.h"
+
 template <>
 struct gl_index_t <unsigned int>
 {
@@ -171,6 +173,7 @@ class terrain_t
 
     vertex_t *          vertices;
     size_t              vertex_count;
+    texture_t           texture;
 
     terrain_indices_t <unsigned int, TERRAIN_TYPE>   indices;
 
@@ -178,6 +181,8 @@ public:
     terrain_t(const char * path)
     {
         SDL_Surface * image = IMG_Load(path);
+        //FIXME: Don't hard code the grass texture!
+        texture.open("media/grass.png", GL_LINEAR, GL_LINEAR);
 
 #ifdef _DEBUG
         if (! image)
@@ -220,6 +225,8 @@ public:
     {
         glColor3f(1.0, 1.0, 1.0);
 
+        glEnable(GL_TEXTURE_2D);
+        texture.bind(0);
         vertex_processor<vertex_t, unsigned int>::prepare();
         vertex_processor<vertex_t, unsigned int>::submit(vertices);
 
@@ -229,6 +236,7 @@ public:
 #       endif
 
         vertex_processor<vertex_t, unsigned int>::done();
+        glDisable(GL_TEXTURE_2D);
 
 #       ifdef WIREFRAME
         show_normals(vertices, vertex_count);
