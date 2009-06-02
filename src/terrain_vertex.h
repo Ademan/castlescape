@@ -93,8 +93,8 @@ struct vertex_processor<terrain_vertex_t, unsigned int>
         int red = color[0];
         v.y = red / 16.0;
         v.r = v.g = v.b = red / 255.0;
-        v.s = x;
-        v.t = y;
+        v.s = x / 4.0;
+        v.t = y / 4.0;
 	}
 
 	static void color_vertex(terrain_vertex_t & v, const float highest,

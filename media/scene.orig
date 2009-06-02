@@ -1,0 +1,6 @@
+<<<<<<< HEAD:media/scene
+orbit_light xy 65 1 1 1
+=======
+rorbit_light zy 65 1 1 1
+>>>>>>> bc17a2586c86466c28a2dced9ad7af95626a020e:media/scene
+terrain 0 0 0 1 1 1 media/height.png

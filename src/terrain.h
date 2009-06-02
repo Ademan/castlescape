@@ -182,7 +182,7 @@ public:
     {
         SDL_Surface * image = IMG_Load(path);
         //FIXME: Don't hard code the grass texture!
-        texture.open("media/grass.png", GL_LINEAR, GL_LINEAR);
+        texture.open("media/grass.jpg", GL_LINEAR, GL_LINEAR);
 
 #ifdef _DEBUG
         if (! image)
