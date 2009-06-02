@@ -29,6 +29,7 @@ inline void draw_compass()
 //TODO: Make this draw triangles instead of lines!!!
 inline void draw_cone(const float xoffset, const float yoffset, const float zoffset, const float height, const float width)
 {
+    glDisable(GL_LIGHTING);
 	glBegin(GL_LINES);
 		float top = yoffset + height;
 		float a, b, c, d;
@@ -68,6 +69,7 @@ inline void draw_cone(const float xoffset, const float yoffset, const float zoff
 		glVertex3f(xoffset, yoffset, c);
 		glVertex3f(xoffset, yoffset, d);
 	glEnd();
+    glEnable(GL_LIGHTING);
 }
 
 inline void y_plane_up(const float y, const float width)

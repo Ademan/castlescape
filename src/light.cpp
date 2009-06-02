@@ -52,30 +52,13 @@ void OrbitingLight::step(const float dtime)
     }
 }
 
-void RenderableOrbitingLight::step(const float dtime)
-{
-	time += dtime;
-
-    light.pos[0] = radius * cos(time);
-    light.pos[1] = radius * sin(time);
-    light.pos[2] = 0;
-}
-
 void RenderableOrbitingLight::render()
 {
-	draw_cone(light.pos[0], light.pos[1] + 50, light.pos[2], 10, 10);
-	/*glBegin(GL_LINES);
-	glVertex3f(light.pos[0], light.pos[1] + 50, light.pos[2]);
-	glVertex3f(light.pos[0] + 10, light.pos[1] + 40, light.pos[2]);
-
-	glVertex3f(light.pos[0], light.pos[1] + 50, light.pos[2]);
-	glVertex3f(light.pos[0] - 10, light.pos[1] + 40, light.pos[2]);
-
-	glVertex3f(light.pos[0], light.pos[1] + 50, light.pos[2]);
-	glVertex3f(light.pos[0], light.pos[1] + 40, light.pos[2] + 10);
-	
-	glVertex3f(light.pos[0], light.pos[1] + 50, light.pos[2]);
-	glVertex3f(light.pos[0], light.pos[1] + 40, light.pos[2] - 10);
-	glEnd();*/
-
+    glDisable(GL_LIGHTING);
+    glColor3fv(reinterpret_cast <float *> (&(light.diffuse)));
+    glPointSize(16);
+    glBegin(GL_POINTS);
+        glVertex3fv(reinterpret_cast <float *> (&(light.pos)));
+    glEnd();
+    glEnable(GL_LIGHTING);
 }

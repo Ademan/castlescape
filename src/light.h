@@ -118,6 +118,7 @@ protected:
     float   time;
     float   radius;
 public:
+    OrbitingLight() {}
     OrbitingLight(const Axis _axis, const float _radius, float r, float g, float b): radius(_radius), time(0), axis(_axis)
     {
         light.diffuse[0] = r;
@@ -128,14 +129,12 @@ public:
     virtual void step(const float dtime);   
 };
 
-class RenderableOrbitingLight: public Light, public Entity, public IRenderable
+class RenderableOrbitingLight: public OrbitingLight, public IRenderable
 {
-protected:
-	float   time;
-    float   radius;
 public:
- 
-    RenderableOrbitingLight(const float _radius, float r, float g, float b): radius(_radius), time(0)
+    RenderableOrbitingLight() {}
+    RenderableOrbitingLight(const OrbitingLight::Axis _axis, const float _radius, float r, float g, float b): OrbitingLight(_axis, _radius, r, g, b)
+       // axis(_axis), radius(_radius), time(0)
     {
         light.diffuse[0] = r;
         light.diffuse[1] = g;
@@ -143,7 +142,7 @@ public:
         light.diffuse[3] = 1.0;
     }
 
-	virtual void step(const float dtime);   
+	//virtual void step(const float dtime);   
 	virtual void render();
 };
 
