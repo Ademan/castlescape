@@ -37,8 +37,6 @@ int main(int argc, char ** argv)
     //OrbitingLight   light(64, 1, 0, 0);
     //RenderableOrbitingLight light2(64, 1, 1, 0);
 	//FIXME: Move this into the engine.
-	//LuaManager L;
-	//luaL_dofile(L.vm(), "scripts/test.lua");
 	doLua();
 
     float lava_color[] = {0x90 / 256.0,
@@ -69,7 +67,6 @@ int main(int argc, char ** argv)
     glFogf(GL_FOG_END, 200);
     glFogi(GL_FOG_MODE, GL_LINEAR);
 
-
     SDL_Event   event;
 
 	SDL_ShowCursor(SDL_DISABLE);
@@ -83,6 +80,7 @@ int main(int argc, char ** argv)
     //FIXME: remove later
     engine.add_renderable(&castle);
 
+    //FIXME: remove once lua integration is mature
     construct(engine);
 
     timer.elapsed();

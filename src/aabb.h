@@ -97,11 +97,6 @@ inline bool intersect(const AABB & a, const AABB & b)
  *
  */
 
-inline void vec3_vertex(const vec3 & v)
-{
-    glVertex3fv(reinterpret_cast <const float *> (&v));
-}
-
 inline void draw_aabb(const AABB & box)
 {
     vec3    lower[3];
