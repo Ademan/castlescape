@@ -1,8 +1,8 @@
 GPP=g++
 
-LIBS=-lGL -lSDL -lSDL_image -lGLU
+LIBS=-lGL -lSDL -lSDL_image -lGLU -llua5.1
 
-CML=-I $(PWD)/include/cml-1_0_0
+CML=-I $(PWD)/include/cml-1_0_0 -I /usr/include/lua5.1
 INCLUDE=$(CML)
 
 BIN=tview
