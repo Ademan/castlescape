@@ -17,6 +17,10 @@ public:
         last = now;
         return result;
     }
+	const float peek()
+	{
+		return (SDL_GetTicks() - last) / 1000.0f;
+	}
 };
 
 #endif /*TIMER_H*/
