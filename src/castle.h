@@ -13,7 +13,9 @@ struct cube_with_battlements
 {
     std::vector <castle_transform>  battlements;
     castle_transform                body;
-    void generate_corners(float bwidth);
+    void generate_corners(castle_transform & battlement,
+                          float hwidth);
+    void generate_battlement(castle_transform & battlement, float x, float y);
     void generate_battlements();
     void draw();
 };
