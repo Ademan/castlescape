@@ -108,54 +108,69 @@ void cube_with_battlements::generate_battlements()
 
 Castle::Castle()
 {
-    body.body.position.position[0] = random(-64.0f, 64.0f);
-    body.body.position.position[2] = random(-64.0f, 64.0f);
-
-    body.body.scaling.scaling[1] = random(8, 16);
-    body.body.scaling.scaling[0] = body.body.scaling.scaling[2] = random(4, 24);
-    body.body.position.position[1] = 0.33 * body.body.scaling.scaling[1];
-
-    body.generate_battlements();
-
-    keep.body.scaling.scaling[1] = random(0.25f, 0.75f);
-    keep.body.scaling.scaling[0] = keep.body.scaling.scaling[2] = 1 / random(4.0f, 2.0f);
-
-    //keep.body.position.position[0] = random(-0.5f, 0.5f);
-    //keep.body.position.position[2] = random(-0.5f, 0.5f);
-    keep.body.position.position[0] = keep.body.position.position[2] = 0;
-
-    keep.body.position.position[1] = keep.body.scaling.scaling[1] / 2.0;
-    keep.generate_battlements();
+    generate();
+    keep = new Castle(6);
 }
 
-void cube_with_battlements::draw()
+void Castle::generate()
 {
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-        body.apply();
-        draw_cube();
+    body.transform.position.position[0] = random(-64.0f, 64.0f);
+    body.transform.position.position[2] = random(-64.0f, 64.0f);
+
+    body.transform.scaling.scaling[1] = random(8, 16);
+    body.transform.scaling.scaling[0] = body.transform.scaling.scaling[2] = random(4, 24);
+    body.transform.position.position[1] = 0.33 * body.transform.scaling.scaling[1];
+
+    body.generate_battlements();
+}
+
+void Castle::generate_as_child()
+{
+    body.transform.scaling.scaling[1] = random(0.25f, 0.75f);
+    body.transform.scaling.scaling[0] = body.transform.scaling.scaling[2] = 1 / random(4.0f, 2.0f);
+
+    body.transform.position.position[0] = body.transform.position.position[2] = 0;
+
+    body.transform.position.position[1] = body.transform.scaling.scaling[1] / 2.0;
+    body.generate_battlements();
+}
+
+Castle::Castle(const unsigned int remaining_depth)
+{
+    generate_as_child();
+    if (remaining_depth > 0)
+        keep = new Castle(remaining_depth - 1);
+    else keep = NULL;
+
+}
+
+Castle::~Castle()
+{
+    if (keep) delete keep;
+}
+
+void cube_with_battlements::draw_battlements()
+{
+    for (int i = 0; i < battlements.size(); i++)
+    {
         glPushMatrix();
-            glTranslatef(0, 0.5, 0);
-            for (int i = 0; i < battlements.size(); i++)
-            {
-                glPushMatrix();
-                battlements[i].apply();
-                draw_cube();
-                glPopMatrix();
-            }
+        battlements[i].apply();
+        draw_cube();
         glPopMatrix();
-    glPopMatrix();
+    }
 }
 
 //FIXME: remove redundant push/pops and transformations
 void Castle::render()
 {
     glColor3f(0.7, 0.7, 0.7);
-    body.draw();
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
-        body.body.apply();
+        body.transform.apply();
+        draw_cube();
         glTranslatef(0, 0.5, 0);
-        keep.draw();
+        body.draw_battlements();
+        if (keep)
+            keep->render();
     glPopMatrix();
 }

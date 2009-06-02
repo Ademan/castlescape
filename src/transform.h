@@ -52,7 +52,18 @@ struct transform_t
     
     void apply()
     {
-        //glPushMatrix();
+        position.apply();
+        scaling.apply();
+    }
+};
+
+struct transscale_t
+{
+    translation_t   position;
+    scaling_t       scaling;
+    
+    void apply()
+    {
         position.apply();
         scaling.apply();
     }
