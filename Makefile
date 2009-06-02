@@ -2,8 +2,9 @@ GPP=g++
 
 LIBS=-lGL -lSDL -lSDL_image -lGLU -llua5.1
 
-CML=-I $(PWD)/include/cml-1_0_0 -I /usr/include/lua5.1
-INCLUDE=$(CML)
+CML=-I $(PWD)/include/cml-1_0_0
+LUA=-I /usr/include/lua5.1
+INCLUDE=$(CML) $(LUA)
 
 BIN=tview
 EXEC=$(PWD)/$(BIN)
