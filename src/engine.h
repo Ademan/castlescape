@@ -7,6 +7,7 @@
 #include "renderable.h"
 #include "entity.h"
 #include "input_handlers.h"
+#include "timer.h"
 
 class Engine
 {
@@ -29,8 +30,12 @@ class Engine
     typedef std::vector <IKeyboardHandler *>    keyboard_handler_list;
     typedef keyboard_handler_list::iterator     keyboard_handler_iter;
     keyboard_handler_list   keyboard_handlers;
+
+	Timer fps_timer;
+	size_t frame_count;
+	size_t last_frame_count;
 public:
-    Engine(){}
+    Engine(): frame_count(0), last_frame_count(0) {}
 
     void add_mouse_handler(IMouseHandler * handler)
     {mouse_handlers.push_back(handler);}

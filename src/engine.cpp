@@ -1,6 +1,7 @@
 #include "engine.h"
 #include <algorithm>
 #include <sstream>
+#include "timer.h"
 
 void Engine::render()
 {
@@ -13,9 +14,16 @@ void Engine::render()
 //FIXME: for_each somehow!
 void Engine::step(const float dtime)
 {
-	std::ostringstream fps;
-	fps << "FPS: " << (unsigned int)(1 / dtime);
-	SDL_WM_SetCaption(fps.str().c_str(), "");
+	frame_count++;
+	if (fps_timer.peek() >= 1.0)
+	{
+		std::ostringstream fps;
+		fps << "FPS: " << (unsigned int)(frame_count) << " Last: " << (unsigned int)(last_frame_count);
+		SDL_WM_SetCaption(fps.str().c_str(), "");
+		last_frame_count = frame_count;
+		frame_count = 0;
+		fps_timer.elapsed();
+	}
     for (entity_iter i = entities.begin();
          i != entities.end(); i++)
     {
