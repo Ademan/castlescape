@@ -59,7 +59,7 @@ struct terrain_vertex_t
 {
     float x, y, z;
     float r, g, b;
-    //float s, t; /*texture coordinates*/
+    float s, t; /*texture coordinates*/
     float nx, ny, nz; /*normal coordinates*/
 };
 
@@ -93,6 +93,8 @@ struct vertex_processor<terrain_vertex_t, unsigned int>
         int red = color[0];
         v.y = red / 16.0;
         v.r = v.g = v.b = red / 255.0;
+        v.s = x;
+        v.t = y;
 	}
 
 	static void color_vertex(terrain_vertex_t & v, const float highest,
@@ -148,8 +150,8 @@ struct vertex_processor<terrain_vertex_t, unsigned int>
 
 		float high_v = highest(vertices, vertex_count);
 		
-		for (int i = 0; i < vertex_count; i++)
-			color_vertex(vertices[i], high_v, colors, heights, 6);
+		/*for (int i = 0; i < vertex_count; i++)
+			color_vertex(vertices[i], high_v, colors, heights, 6);*/
 
         /*clamping_indexer_t <int> in(width, height);
 		 *
@@ -173,17 +175,20 @@ struct vertex_processor<terrain_vertex_t, unsigned int>
     {
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_NORMAL_ARRAY);
-        glEnableClientState(GL_COLOR_ARRAY);
+        //glEnableClientState(GL_COLOR_ARRAY);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
     }
     static void submit(terrain_vertex_t * vertices)
     {
         glVertexPointer(3, GL_FLOAT, sizeof(terrain_vertex_t), &(vertices->x));
-        glColorPointer(3, GL_FLOAT, sizeof(terrain_vertex_t), &(vertices->r));
+        //glColorPointer(3, GL_FLOAT, sizeof(terrain_vertex_t), &(vertices->r));
+        glTexCoordPointer(2, GL_FLOAT, sizeof(terrain_vertex_t), &(vertices->s));
 		glNormalPointer(GL_FLOAT, sizeof(terrain_vertex_t), &(vertices->nx));
     }
     static void done()
     {
-        glDisableClientState(GL_COLOR_ARRAY);
+        glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        //glDisableClientState(GL_COLOR_ARRAY);
         glDisableClientState(GL_NORMAL_ARRAY);
         glDisableClientState(GL_VERTEX_ARRAY);
     }
