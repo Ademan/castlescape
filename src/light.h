@@ -14,7 +14,8 @@
 
 #include "args.h"
 
-using std::cout; using std::endl;
+using std::cout;
+using std::endl;
 
 inline void enable_lighting()
 {
