@@ -6,11 +6,6 @@
 #include "cone.h"
 #include "cylinder.h"
 
-struct cone_vertex_t
-{
-    float x, y, z;
-};
-
 void draw_compass();
 
 //FIXME: rename plane functions to be sane!

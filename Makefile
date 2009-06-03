@@ -17,7 +17,7 @@ CCFLAGS=$(DEBUG)
 SOURCES = $(wildcard src/*.cpp)
 HEADERS = $(wildcard src/*.h)
 
-OBJECTS=bin/main.o bin/util.o bin/terrain_vertex.o bin/engine.o bin/view.o bin/light.o bin/window.o bin/args.o bin/terrain.o bin/castle.o bin/primitive.o bin/cylinder.o bin/lua.o
+OBJECTS=bin/main.o bin/util.o bin/terrain_vertex.o bin/engine.o bin/view.o bin/light.o bin/window.o bin/args.o bin/terrain.o bin/castle.o bin/primitive.o bin/cylinder.o bin/lua.o bin/cone.o
 #OBJECTS=$(wildcard bin/*.o)
 
 #/$(BIN): bin/%.o

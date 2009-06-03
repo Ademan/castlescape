@@ -83,6 +83,10 @@ int main(int argc, char ** argv)
     //FIXME: remove once lua integration is mature
     construct(engine);
 
+    //FIXME: remove me later
+    Cone cone(16);
+    engine.add_renderable(&cone);
+
     timer.elapsed();
     while (true)
     {
