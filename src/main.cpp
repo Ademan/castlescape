@@ -33,7 +33,7 @@ int main(int argc, char ** argv)
     Engine          engine;
     Timer           timer;
     View            view(640, 480);
-    Castle          castle;
+    Castle          castles[5];
     //OrbitingLight   light(64, 1, 0, 0);
     //RenderableOrbitingLight light2(64, 1, 1, 0);
 	//FIXME: Move this into the engine.
@@ -61,10 +61,10 @@ int main(int argc, char ** argv)
     glLoadIdentity();
 
 	glFrontFace(GL_CW);
-    //glEnable(GL_FOG);
+    glEnable(GL_FOG);
     glFogfv(GL_FOG_COLOR, lava_color);
-    glFogf(GL_FOG_START, 80);
-    glFogf(GL_FOG_END, 200);
+    glFogf(GL_FOG_START, 32);
+    glFogf(GL_FOG_END, 64);
     glFogi(GL_FOG_MODE, GL_LINEAR);
 
     SDL_Event   event;
@@ -77,11 +77,12 @@ int main(int argc, char ** argv)
     engine.add_render_state(&view);
 
     enable_lighting();
-    //FIXME: remove later
-    engine.add_renderable(&castle);
 
     //FIXME: remove once lua integration is mature
     construct(engine);
+
+    for (unsigned int i = 0; i < 5; i++)
+        engine.add_renderable(castles + i);
 
     //FIXME: remove me later
     Cone cone(16);
